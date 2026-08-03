@@ -32,9 +32,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/bin/vivofbe:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivofbe \
     $(LOCAL_PATH)/recovery/root/system/bin/vivotool:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivotool \
     $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery \
-    $(LOCAL_PATH)/recovery/root/system/etc/security/otacerts.zip:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/etc/security/otacerts.zip \
-    $(LOCAL_PATH)/recovery/root/system/etc/vintf/manifest.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/etc/vintf/manifest.xml \
-    $(LOCAL_PATH)/recovery/root/system/etc/vintf/manifest/manifest.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/etc/vintf/manifest/manifest.xml \
     $(LOCAL_PATH)/recovery/root/system/lib64/libGuardianAngleClient.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libGuardianAngleClient.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libGuardianAngleService.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libGuardianAngleService.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libGuardianAngleServiceImpl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libGuardianAngleServiceImpl.so \
