@@ -44,8 +44,7 @@ system/lib64/libGuardianAngleClient.so
 system/lib64/libGuardianAngleService.so
 system/lib64/libGuardianAngleServiceImpl.so
 
-# Keystore
-system/bin/keystore
+# === Keystore (keystore binary built from source by AOSP) ===
 system/bin/keystore_auth
 system/lib64/libkeystore_aidl.so
 system/lib64/libkeystore_binder.so
@@ -53,10 +52,12 @@ system/lib64/libkeystore_parcelables.so
 system/lib64/libkeystore-attestation-application-id.so
 system/lib64/libkeyutils.so
 
-# === Service Managers ===
-vendor/bin/vndservicemanager
-system/bin/servicemanager
-system/bin/hwservicemanager
+# === Service Managers (built from source by AOSP - not copied as prebuilts) ===
+# vendor/bin/vndservicemanager - built from source
+# system/bin/servicemanager - built from source
+# system/bin/hwservicemanager - built from source
+# system/bin/keystore - built from source
+# system/bin/reboot - built from source
 
 # === Fastbootd Support ===
 vendor/bin/hw/android.hardware.boot@1.0-service

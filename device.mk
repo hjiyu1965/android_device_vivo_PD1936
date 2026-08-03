@@ -18,21 +18,19 @@ PRODUCT_COPY_FILES += \
 
 # Device-specific binaries and libraries (extracted from stock recovery ramdisk)
 # Only includes files NOT provided by TWRP/AOSP build system
+# NOTE: hwservicemanager, servicemanager, vndservicemanager, reboot, keystore
+#       are built from source by the build system - do NOT copy prebuilt versions
 # Categories: FBE decryption, Qualcomm vendor, vivo proprietary, touch firmware
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/bin/aria2c:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/aria2c \
     $(LOCAL_PATH)/recovery/root/system/bin/guardianangle:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/guardianangle \
-    $(LOCAL_PATH)/recovery/root/system/bin/hwservicemanager:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/hwservicemanager \
     $(LOCAL_PATH)/recovery/root/system/bin/i2cdetect:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/i2cdetect \
     $(LOCAL_PATH)/recovery/root/system/bin/i2cdump:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/i2cdump \
     $(LOCAL_PATH)/recovery/root/system/bin/i2cget:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/i2cget \
     $(LOCAL_PATH)/recovery/root/system/bin/i2cset:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/i2cset \
-    $(LOCAL_PATH)/recovery/root/system/bin/keystore:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/keystore \
     $(LOCAL_PATH)/recovery/root/system/bin/keystore_auth:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/keystore_auth \
     $(LOCAL_PATH)/recovery/root/system/bin/little_buddy:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/little_buddy \
-    $(LOCAL_PATH)/recovery/root/system/bin/reboot:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/reboot \
     $(LOCAL_PATH)/recovery/root/system/bin/rec_bigdata:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/rec_bigdata \
-    $(LOCAL_PATH)/recovery/root/system/bin/servicemanager:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/servicemanager \
     $(LOCAL_PATH)/recovery/root/system/bin/vivofbe:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivofbe \
     $(LOCAL_PATH)/recovery/root/system/bin/vivotool:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivotool \
     $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery \
@@ -80,7 +78,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/bin/hw/android.hardware.boot@1.0-service:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/hw/android.hardware.boot@1.0-service \
     $(LOCAL_PATH)/recovery/root/vendor/bin/hw/android.hardware.health@2.0-service:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/hw/android.hardware.health@2.0-service \
     $(LOCAL_PATH)/recovery/root/vendor/bin/qseecomd:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qseecomd \
-    $(LOCAL_PATH)/recovery/root/vendor/bin/vndservicemanager:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/vndservicemanager \
     $(LOCAL_PATH)/recovery/root/vendor/etc/gpfspath_oem_config.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/gpfspath_oem_config.xml \
     $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/compatibility_matrix.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/vintf/compatibility_matrix.xml \
     $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/manifest.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/vintf/manifest.xml \
