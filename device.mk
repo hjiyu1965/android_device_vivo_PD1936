@@ -34,18 +34,50 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libvivofscrypt.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libvivofscrypt.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libvivogatekeeper.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libvivogatekeeper.so
 
-# Qualcomm vendor proprietary config and firmware only
-# NOTE: All vendor/lib64/ libraries are built from source by AOSP/TWRP
-# (hardware/qcom/sm7250, device/qcom/common, etc.)
-# Only firmware and config files are kept as prebuilts
+# Qualcomm vendor proprietary libraries and firmware
+# NOTE: HIDL interface libraries (vendor.display.config@1.0.so,
+#       vendor.qti.hardware.tui_comm@1.0.so) are excluded because
+#       they are built from source by hardware/qcom and cause conflicts.
+#       All other vendor/lib64/ libraries are Qualcomm proprietary
+#       and NOT present in the AOSP/TWRP source tree.
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/etc/gpfspath_oem_config.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/gpfspath_oem_config.xml \
+    $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/manifest.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/vintf/manifest.xml \
+    $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/compatibility_matrix.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/vintf/compatibility_matrix.xml \
     $(LOCAL_PATH)/recovery/root/vendor/firmware/TP-CONFIG-FW-PD1936-LCMID33-VER0x0028.bin:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/TP-CONFIG-FW-PD1936-LCMID33-VER0x0028.bin \
     $(LOCAL_PATH)/recovery/root/vendor/firmware/TP-CONFIG-FW-PD1936-LCMID33-VER0x002C.bin:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/TP-CONFIG-FW-PD1936-LCMID33-VER0x002C.bin \
     $(LOCAL_PATH)/recovery/root/vendor/firmware/TP-FW-PD1936-LCMID33-VER0x502100028.bin:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/TP-FW-PD1936-LCMID33-VER0x502100028.bin \
     $(LOCAL_PATH)/recovery/root/vendor/firmware/TP-FW-PD1936-LCMID33-VER0x50213002C.bin:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/TP-FW-PD1936-LCMID33-VER0x50213002C.bin \
     $(LOCAL_PATH)/recovery/root/vendor/firmware/bdwlan.bin.4g:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/bdwlan.bin.4g \
-    $(LOCAL_PATH)/recovery/root/vendor/firmware/touch_firmwares_recovery.bin:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/touch_firmwares_recovery.bin
+    $(LOCAL_PATH)/recovery/root/vendor/firmware/touch_firmwares_recovery.bin:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/touch_firmwares_recovery.bin \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/hw/android.hardware.gatekeeper@1.0-impl-qti.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/hw/android.hardware.gatekeeper@1.0-impl-qti.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libGPreqcancel.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libGPreqcancel.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libGPreqcancel_svc.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libGPreqcancel_svc.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libQSEEComAPI.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libQSEEComAPI.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libStDrvInt.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libStDrvInt.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libdiag.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libdiag.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libdrmfs.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libdrmfs.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libdrmtime.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libdrmtime.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libdsutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libdsutils.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libidl.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libjson.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libjson.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libmdmdetect.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libmdmdetect.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libperipheral_client.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libperipheral_client.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libqisl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libqisl.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libqmi_cci.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libqmi_cci.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libqmi_client_qmux.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libqmi_client_qmux.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libqmi_common_so.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libqmi_common_so.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libqmi_csi.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libqmi_csi.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libqmi_encdec.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libqmi_encdec.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libqmiservices.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libqmiservices.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libqrtr.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libqrtr.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libqsocket.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libqsocket.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libsecureui.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libsecureui.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libsecureui_svcsock.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libsecureui_svcsock.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libspcom.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libspcom.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libssd.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libssd.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libssl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libssl.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libtime_genoff.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libtime_genoff.so
 
 # USB controller property (from boot cmdline: androidboot.usbcontroller=a600000.dwc3)
 PRODUCT_PROPERTY_OVERRIDES += \
