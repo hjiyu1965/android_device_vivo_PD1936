@@ -9,7 +9,7 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 
-# Inherit from TWRP common config (TWRP 11 uses vendor/twrp instead of vendor/omni)
+# Inherit from TWRP common config
 $(call inherit-product, vendor/twrp/config/common.mk)
 
 # Inherit from PD1936 device
@@ -17,7 +17,7 @@ $(call inherit-product, device/vivo/PD1936/device.mk)
 
 # Device identifier
 PRODUCT_DEVICE := PD1936
-PRODUCT_NAME := omni_PD1936
+PRODUCT_NAME := twrp_PD1936
 PRODUCT_BRAND := vivo
 PRODUCT_MODEL := V1936A
 PRODUCT_MANUFACTURER := vivo
