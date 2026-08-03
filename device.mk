@@ -28,13 +28,13 @@ PRODUCT_COPY_FILES += \
 
 # FBE decryption chain - vendor/bin HAL services (from stock recovery.img)
 # NOTE: wait_for_keymaster, keystore, keystore_auth, logd, servicemanager,
-#       hwservicemanager, ashmemd, tombstoned are built from source by AOSP.
-#       Only vendor/bin HAL services are prebuilts.
+#       hwservicemanager, ashmemd, tombstoned, android.hardware.boot@1.0-service,
+#       android.hardware.health@2.0-service are built from source by AOSP.
+#       Only truly proprietary HAL services are prebuilts.
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/bin/qseecomd:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qseecomd \
     $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.keymaster@4.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.keymaster@4.0-service-qti \
-    $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.gatekeeper@1.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.gatekeeper@1.0-service-qti \
-    $(LOCAL_PATH)/recovery/root/vendor/bin/hw/android.hardware.health@2.0-service:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/hw/android.hardware.health@2.0-service
+    $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.gatekeeper@1.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.gatekeeper@1.0-service-qti
 
 # vivo proprietary libraries (NOT built from source by AOSP/TWRP)
 PRODUCT_COPY_FILES += \
