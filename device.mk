@@ -14,6 +14,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/init.recovery.qcom.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.qcom.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.svc.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.svc.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.touch.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.touch.rc \
+    $(LOCAL_PATH)/recovery/root/init.recovery.vivo.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.vivo.rc \
     $(LOCAL_PATH)/recovery/root/ueventd.qcom.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/ueventd.qcom.rc
 
 # vivo proprietary binaries (NOT built from source by AOSP/TWRP)
@@ -96,7 +97,45 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libssl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libssl.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libtime_genoff.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libtime_genoff.so
 
+# Critical vivo device properties for touchscreen firmware loading
+# vts_app_recovery reads ro.build.oem.projects to match firmware files
+# Without these, it reports "no firmware for product:" (empty product name)
+# PRODUCT_DEFAULT_PROPERTY_OVERRIDES goes into prop.default (recovery ramdisk root)
+# PRODUCT_PROPERTY_OVERRIDES goes into build.prop (system) as backup
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.build.oem.projects=PD1936 PD1936B PD1936C PD1936D PD1936E PD1936G \
+    ro.vivo.product.release.name=PD1936 \
+    ro.product.board=msmnile \
+    ro.board.platform=msmnile \
+    ro.vivo.product.platform=SM8150 \
+    ro.vivo.product.solution=QCOM \
+    ro.vivo.hardware.version=PD1936MA \
+    ro.board.bbk=MA \
+    ro.vivo.board.version=MA \
+    ro.build.expect.hardware=PD1936MA \
+    ro.vivo.product.series=IQOO \
+    ro.vivo.oem.support=yes \
+    ro.minui.pixel_format=RGBX_8888
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.build.oem.projects=PD1936 PD1936B PD1936C PD1936D PD1936E PD1936G \
+    ro.vivo.product.release.name=PD1936 \
+    ro.product.board=msmnile \
+    ro.board.platform=msmnile \
+    ro.vivo.product.platform=SM8150 \
+    ro.vivo.product.solution=QCOM \
+    ro.vivo.hardware.version=PD1936MA \
+    ro.board.bbk=MA \
+    ro.vivo.board.version=MA \
+    ro.build.expect.hardware=PD1936MA \
+    ro.vivo.product.series=IQOO \
+    ro.vivo.oem.support=yes \
+    ro.minui.pixel_format=RGBX_8888
+
 # USB controller property (from boot cmdline: androidboot.usbcontroller=a600000.dwc3)
+# Also ensure ADB is available in recovery
 PRODUCT_PROPERTY_OVERRIDES += \
     sys.usb.controller=a600000.dwc3 \
-    sys.usb.configfs=1
+    sys.usb.configfs=1 \
+    persist.sys.usb.config=adb \
+    ro.adb.secure=0

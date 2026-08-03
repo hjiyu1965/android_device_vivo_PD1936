@@ -87,5 +87,5 @@ service health-hal-2-0 /vendor/bin/hw/android.hardware.health@2.0-service
 service vts_app_recovery /system/bin/vts_app_recovery  --update
   user system
   disabled
-  seclabel u:r:vts_app:s0
+  seclabel u:r:recovery:s0
   oneshot
