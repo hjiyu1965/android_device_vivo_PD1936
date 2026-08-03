@@ -20,11 +20,20 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/bin/aria2c:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/aria2c \
     $(LOCAL_PATH)/recovery/root/system/bin/guardianangle:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/guardianangle \
+    $(LOCAL_PATH)/recovery/root/system/bin/keystore_auth:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/keystore_auth \
     $(LOCAL_PATH)/recovery/root/system/bin/little_buddy:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/little_buddy \
     $(LOCAL_PATH)/recovery/root/system/bin/rec_bigdata:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/rec_bigdata \
     $(LOCAL_PATH)/recovery/root/system/bin/vivofbe:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivofbe \
     $(LOCAL_PATH)/recovery/root/system/bin/vivotool:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivotool \
-    $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery
+    $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery \
+    $(LOCAL_PATH)/recovery/root/system/bin/wait_for_keymaster:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/wait_for_keymaster
+
+# FBE decryption chain - vendor/bin HAL services (from stock recovery.img)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/qseecomd:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qseecomd \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.keymaster@4.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.keymaster@4.0-service-qti \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.gatekeeper@1.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.gatekeeper@1.0-service-qti \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/hw/android.hardware.health@2.0-service:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/hw/android.hardware.health@2.0-service
 
 # vivo proprietary libraries (NOT built from source by AOSP/TWRP)
 PRODUCT_COPY_FILES += \
@@ -33,6 +42,27 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libGuardianAngleServiceImpl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libGuardianAngleServiceImpl.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libvivofscrypt.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libvivofscrypt.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libvivogatekeeper.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libvivogatekeeper.so
+
+# Keymaster / Keystore / FBE decryption libraries (from stock recovery.img)
+# These are vivo/Qualcomm proprietary, NOT built from source by AOSP/TWRP
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymaster4_1support.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymaster4_1support.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymaster4support.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymaster4support.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymaster_messages.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymaster_messages.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymaster_portable.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymaster_portable.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymasterdeviceutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymasterdeviceutils.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymasterutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymasterutils.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeystore-attestation-application-id.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeystore-attestation-application-id.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeystore_aidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeystore_aidl.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeystore_binder.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeystore_binder.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeystore_parcelables.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeystore_parcelables.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeyutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeyutils.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libqcbor.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqcbor.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/librpmb.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/librpmb.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libsoft_attestation_cert.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libsoft_attestation_cert.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libsoftkeymasterdevice.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libsoftkeymasterdevice.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so
 
 # Qualcomm vendor proprietary libraries and firmware
 # NOTE: HIDL interface libraries (vendor.display.config@1.0.so,
