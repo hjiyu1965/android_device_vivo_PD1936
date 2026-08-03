@@ -17,60 +17,32 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/ueventd.qcom.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/ueventd.qcom.rc
 
 # Device-specific binaries and libraries (extracted from stock recovery ramdisk)
-# Only includes files NOT provided by TWRP/AOSP build system
-# NOTE: hwservicemanager, servicemanager, vndservicemanager, reboot, keystore
-#       are built from source by the build system - do NOT copy prebuilt versions
-# Categories: FBE decryption, Qualcomm vendor, vivo proprietary, touch firmware
+# Only includes files NOT built from source by TWRP/AOSP build system.
+# Removed (built from source): hwservicemanager, servicemanager, vndservicemanager,
+#   keystore, keystore_auth, reboot, wget, wait_for_keymaster, i2c-tools,
+#   all HIDL interface libs (android.hardware.*.so, android.hidl.*.so),
+#   all keymaster/keystore support libs (libkeymaster*.so, libkeystore*.so),
+#   libsoftkeymasterdevice.so, libsoft_attestation_cert.so, libkeyutils.so,
+#   librpmb.so, android.system.*.so, hw/android.hardware.health@2.0-impl-default.so
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/bin/aria2c:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/aria2c \
     $(LOCAL_PATH)/recovery/root/system/bin/guardianangle:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/guardianangle \
-    $(LOCAL_PATH)/recovery/root/system/bin/i2cdetect:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/i2cdetect \
-    $(LOCAL_PATH)/recovery/root/system/bin/i2cdump:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/i2cdump \
-    $(LOCAL_PATH)/recovery/root/system/bin/i2cget:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/i2cget \
-    $(LOCAL_PATH)/recovery/root/system/bin/i2cset:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/i2cset \
-    $(LOCAL_PATH)/recovery/root/system/bin/keystore_auth:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/keystore_auth \
     $(LOCAL_PATH)/recovery/root/system/bin/little_buddy:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/little_buddy \
     $(LOCAL_PATH)/recovery/root/system/bin/rec_bigdata:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/rec_bigdata \
     $(LOCAL_PATH)/recovery/root/system/bin/vivofbe:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivofbe \
     $(LOCAL_PATH)/recovery/root/system/bin/vivotool:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivotool \
     $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery \
-    $(LOCAL_PATH)/recovery/root/system/bin/wait_for_keymaster:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/wait_for_keymaster \
-    $(LOCAL_PATH)/recovery/root/system/bin/wget:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/wget \
     $(LOCAL_PATH)/recovery/root/system/etc/security/otacerts.zip:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/etc/security/otacerts.zip \
     $(LOCAL_PATH)/recovery/root/system/etc/vintf/manifest.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/etc/vintf/manifest.xml \
     $(LOCAL_PATH)/recovery/root/system/etc/vintf/manifest/manifest.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/etc/vintf/manifest/manifest.xml \
-    $(LOCAL_PATH)/recovery/root/system/lib64/android.hardware.confirmationui@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/android.hardware.confirmationui@1.0.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/android.hardware.gatekeeper@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/android.hardware.gatekeeper@1.0.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/android.hardware.keymaster@3.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/android.hardware.keymaster@3.0.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/android.hardware.keymaster@4.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/android.hardware.keymaster@4.0.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/android.hardware.keymaster@4.1.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/android.hardware.keymaster@4.1.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/android.hardware.weaver@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/android.hardware.weaver@1.0.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/android.hidl.token@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/android.hidl.token@1.0.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/android.system.suspend@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/android.system.suspend@1.0.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/android.system.wifi.keystore@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/android.system.wifi.keystore@1.0.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/hw/android.hardware.health@2.0-impl-default.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/hw/android.hardware.health@2.0-impl-default.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libGuardianAngleClient.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libGuardianAngleClient.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libGuardianAngleService.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libGuardianAngleService.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libGuardianAngleServiceImpl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libGuardianAngleServiceImpl.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymaster4_1support.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymaster4_1support.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymaster4support.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymaster4support.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymaster_messages.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymaster_messages.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymaster_portable.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymaster_portable.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymasterdeviceutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymasterdeviceutils.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymasterutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymasterutils.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeystore-attestation-application-id.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeystore-attestation-application-id.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeystore_aidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeystore_aidl.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeystore_binder.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeystore_binder.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeystore_parcelables.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeystore_parcelables.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeyutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeyutils.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libqcbor.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqcbor.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/librecovery_ui.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/librecovery_ui.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/librecovery_ui_ext.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/librecovery_ui_ext.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/librpmb.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/librpmb.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libsoft_attestation_cert.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libsoft_attestation_cert.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libsoftkeymasterdevice.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libsoftkeymasterdevice.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libvivofscrypt.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libvivofscrypt.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libvivogatekeeper.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libvivogatekeeper.so \
     $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.gatekeeper@1.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.gatekeeper@1.0-service-qti \
