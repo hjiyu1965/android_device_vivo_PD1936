@@ -25,9 +25,36 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
+# Import additional vivo recovery scripts
+import /init.recovery.vivo.rc
+import /init.recovery.touch.rc
+import /init.recovery.svc.rc
+import /init.recovery.platform.rc
+
+on early-init
+    # Critical properties for vts_app_recovery touchscreen firmware matching
+    # These MUST be set before vts_app_recovery runs
+    setprop ro.build.oem.projects "PD1936 PD1936B PD1936C PD1936D PD1936E PD1936G"
+    setprop ro.vivo.product.release.name "PD1936"
+    setprop ro.vivo.product.model "PD1936"
+    setprop ro.product.model "V1936AL"
+    setprop ro.product.board "msmnile"
+    setprop ro.board.platform "msmnile"
+    setprop ro.vivo.product.platform "SM8150"
+    setprop ro.vivo.product.solution "QCOM"
+    setprop ro.vivo.hardware.version "PD1936MA"
+    setprop ro.board.bbk "MA"
+    setprop ro.vivo.board.version "MA"
+    setprop ro.build.expect.hardware "PD1936MA"
+    setprop ro.vivo.product.series "IQOO"
+    setprop ro.vivo.oem.support "yes"
+
 on init
     write /sys/class/backlight/panel0-backlight/brightness 200
     setprop sys.usb.configfs 1
+    setprop sys.usb.controller "a600000.dwc3"
+    setprop persist.sys.usb.config "adb"
+    setprop ro.adb.secure 0
 
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}
@@ -36,3 +63,19 @@ on property:ro.boot.usbcontroller=*
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+
+on post-fs-data
+    # Run touchscreen firmware update after filesystems are ready
+    # vts_app_recovery reads ro.build.oem.projects to find firmware files
+    exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
+
+on boot
+    # Backup trigger for touchscreen firmware update
+    exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
+
+service touchupdate /system/bin/vts_app_recovery --update
+    class core
+    user root
+    group root system
+    seclabel u:r:recovery:s0
+    oneshot
