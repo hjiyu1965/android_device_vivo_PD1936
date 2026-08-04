@@ -1,50 +1,51 @@
 # TWRP fstab for vivo PD1936 (V1936A)
 # Based on original recovery.fstab from stock firmware PD1936_A_9.15.14
 # NOTE: This is a NON-A/B device (dedicated recovery partition)
+#       No slotselect flags - this device has no A/B slots
 
 # Device         Mount point       FS type    Source                                                     Flags
 
 # System (system_root_image)
-/system          ext4              /dev/block/bootdevice/by-name/system                       flags=display=System;slotselect
-/system_root     auto              /dev/block/bootdevice/by-name/system                       flags=display=System;slotselect
+/system          ext4              /dev/block/bootdevice/by-name/system                       flags=display=System
+/system_root     auto              /dev/block/bootdevice/by-name/system                       flags=display=System
 
 # Vendor
-/vendor          ext4              /dev/block/bootdevice/by-name/vendor                       flags=display=Vendor;slotselect
+/vendor          ext4              /dev/block/bootdevice/by-name/vendor                       flags=display=Vendor
 
 # Metadata (needed for FBE key storage)
-/metadata        ext4              /dev/block/bootdevice/by-name/metadata                     flags=display=Metadata;slotselect
+/metadata        ext4              /dev/block/bootdevice/by-name/metadata                     flags=display=Metadata
 
 # Data (FBE + ICE encryption, F2FS filesystem)
-/data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=Data;encryptable=/data;fileencryption=ice,wrappedkey;length=-16384;slotselect
+/data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=Data;encryptable=/data;fileencryption=ice,wrappedkey;length=-16384
 
 # Cache
-/cache           ext4              /dev/block/bootdevice/by-name/cache                        flags=display=Cache;slotselect
+/cache           ext4              /dev/block/bootdevice/by-name/cache                        flags=display=Cache
 
 # OEM
-/oem             ext4              /dev/block/bootdevice/by-name/oem                           flags=display=OEM;slotselect
+/oem             ext4              /dev/block/bootdevice/by-name/oem                           flags=display=OEM
 
 # External SD card
 /external_sd     vfat              /devices/platform/soc/8804000.sdhci/mmc_host*              flags=display=External_SD;storage;removable;fsflags=utf8
 /external_sd     vfat              /devices/platform/soc/1da4000.ufshc_card/host*             flags=display=External_SD;storage;removable;fsflags=utf8
 
 # Modem firmware
-/vendor/firmware_mnt  vfat         /dev/block/bootdevice/by-name/modem                        flags=display=Firmware;slotselect
+/vendor/firmware_mnt  vfat         /dev/block/bootdevice/by-name/modem                        flags=display=Firmware
 
 # DSP
-/vendor/dsp      ext4              /dev/block/bootdevice/by-name/dsp                           flags=display=DSP;slotselect
+/vendor/dsp      ext4              /dev/block/bootdevice/by-name/dsp                           flags=display=DSP
 
 # Persist
-/mnt/vendor/persist  ext4          /dev/block/bootdevice/by-name/persist                      flags=display=Persist;slotselect
+/mnt/vendor/persist  ext4          /dev/block/bootdevice/by-name/persist                      flags=display=Persist
 
 # Bluetooth firmware
-/vendor/bt_firmware  vfat          /dev/block/bootdevice/by-name/bluetooth                    flags=display=BT_Firmware;slotselect
+/vendor/bt_firmware  vfat          /dev/block/bootdevice/by-name/bluetooth                    flags=display=BT_Firmware
 
 # Raw partitions
 /misc            emmc              /dev/block/bootdevice/by-name/misc                         flags=display=Misc
-/boot            emmc              /dev/block/bootdevice/by-name/boot                         flags=display=Boot;slotselect
+/boot            emmc              /dev/block/bootdevice/by-name/boot                         flags=display=Boot
 /recovery        emmc              /dev/block/bootdevice/by-name/recovery                     flags=display=Recovery
-/vbmeta          emmc              /dev/block/bootdevice/by-name/vbmeta                       flags=display=Vbmeta;slotselect
-/dtbo            emmc              /dev/block/bootdevice/by-name/dtbo                         flags=display=DTBO;slotselect
+/vbmeta          emmc              /dev/block/bootdevice/by-name/vbmeta                       flags=display=Vbmeta
+/dtbo            emmc              /dev/block/bootdevice/by-name/dtbo                         flags=display=DTBO
 
 # USB OTG
 /usbotg          vfat              /devices/platform/soc/*.ssusb/*.dwc3/xhci-hcd.*.auto*      flags=display=USB_OTG;storage;removable;fsflags=utf8

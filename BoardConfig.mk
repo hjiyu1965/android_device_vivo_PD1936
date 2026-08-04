@@ -131,3 +131,6 @@ TWRP_INCLUDE_LOGCAT := true
 
 # TWRP device specific
 TW_DEFAULT_LANGUAGE := zh-CN
+
+# Qualcomm device - add download mode for proper reboot handling
+TW_HAS_DOWNLOAD_MODE := true
