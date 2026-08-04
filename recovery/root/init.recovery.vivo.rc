@@ -1,15 +1,44 @@
 # vivo PD1936 recovery initialization
-# USB/ADB config + touchscreen firmware update trigger
+# This file is confirmed to be loaded by TWRP init (ADB properties work)
+# All touchscreen-related config is in this file because init.recovery.touch.rc
+# may not be loaded by TWRP
+
+on early-init
+    # Critical properties for vts_app_recovery touchscreen firmware matching
+    setprop ro.build.oem.projects "PD1936 PD1936B PD1936C PD1936D PD1936E PD1936G"
+    setprop ro.vivo.product.release.name "PD1936"
+    setprop ro.vivo.product.model "PD1936"
+    setprop ro.product.model "V1936AL"
+    setprop ro.product.board "msmnile"
+    setprop ro.board.platform "msmnile"
+    setprop ro.vivo.product.platform "SM8150"
+    setprop ro.vivo.product.solution "QCOM"
+    setprop ro.vivo.hardware.version "PD1936MA"
+    setprop ro.board.bbk "MA"
+    setprop ro.vivo.board.version "MA"
+    setprop ro.build.expect.hardware "PD1936MA"
+    setprop ro.vivo.product.series "IQOO"
+    setprop ro.vivo.oem.support "yes"
 
 on init
-    # Ensure USB controller is set for ADB functionality
+    # USB controller and ADB configuration
     setprop sys.usb.controller "a600000.dwc3"
     setprop sys.usb.configfs 1
-    # Ensure ADB is enabled in recovery (MTP is disabled via TW_EXCLUDE_MTP)
     setprop persist.sys.usb.config "adb"
     setprop ro.adb.secure 0
 
 on post-fs-data
-    # At this point filesystems are mounted and device nodes are ready
-    # Start touchscreen firmware update service
-    start touchupdate
+    # Run vts_app_recovery after filesystems are ready
+    # This is the primary trigger - exec runs synchronously and blocks until done
+    exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
+
+on boot
+    # Backup trigger in case post-fs-data doesn't fire
+    exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
+
+service touchupdate /system/bin/vts_app_recovery --update
+    class core
+    user root
+    group root system
+    seclabel u:r:recovery:s0
+    oneshot
