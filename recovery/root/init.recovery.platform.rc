@@ -16,7 +16,7 @@ on property:recovery.service=1
     setprop recovery.state.services.ready 1
 
 on property:vts_app_recovery.status=run
-    start vts_app_recovery
+    start touchupdate
     setprop vts_app_recovery.status running
 
 service wait_for_keymaster  /system/bin/wait_for_keymaster
@@ -83,9 +83,3 @@ service health-hal-2-0 /vendor/bin/hw/android.hardware.health@2.0-service
     user root
     group root
     seclabel u:r:recovery:s0
-
-service vts_app_recovery /system/bin/vts_app_recovery  --update
-  user system
-  disabled
-  seclabel u:r:recovery:s0
-  oneshot

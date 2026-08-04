@@ -1,7 +1,21 @@
 on early-init
-    setprop ro.vivo.product.model PD1936      
-    setprop ro.product.model V1936AL          
-    setprop ro.product.board msmnile  
+    # Critical properties for vts_app_recovery touchscreen firmware matching
+    # Must be set before boot so vts_app_recovery can find firmware files
+    setprop ro.build.oem.projects "PD1936 PD1936B PD1936C PD1936D PD1936E PD1936G"
+    setprop ro.vivo.product.release.name "PD1936"
+    setprop ro.vivo.product.model "PD1936"
+    setprop ro.product.model "V1936AL"
+    setprop ro.product.board "msmnile"
+    setprop ro.board.platform "msmnile"
+    setprop ro.vivo.product.platform "SM8150"
+    setprop ro.vivo.product.solution "QCOM"
+    setprop ro.vivo.hardware.version "PD1936MA"
+    setprop ro.board.bbk "MA"
+    setprop ro.vivo.board.version "MA"
+    setprop ro.build.expect.hardware "PD1936MA"
+    setprop ro.vivo.product.series "IQOO"
+    setprop ro.vivo.oem.support "yes"
+
 on boot
 	chown system /proc/NVTSPI
 	chmod 0666 /proc/NVTSPI
@@ -161,9 +175,8 @@ on boot
 
 service touchupdate /system/bin/vts_app_recovery --update
 	class core
-	user system
+	user root
+	group root system
 	disabled
 	seclabel u:r:recovery:s0
 	oneshot
-on boot
-    exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update

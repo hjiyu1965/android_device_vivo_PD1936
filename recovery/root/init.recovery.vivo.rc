@@ -1,33 +1,11 @@
 # vivo PD1936 recovery initialization
-# Sets critical device properties needed by vts_app_recovery for touchscreen firmware loading
-# These properties are also set via PRODUCT_DEFAULT_PROPERTY_OVERRIDES in device.mk
-# This script provides a runtime backup in case property files are not loaded correctly
-
-on early-init
-    # Critical properties for vts_app_recovery touchscreen firmware matching
-    # ro.build.oem.projects is the primary key used to find firmware files
-    setprop ro.build.oem.projects "PD1936 PD1936B PD1936C PD1936D PD1936E PD1936G"
-    setprop ro.vivo.product.release.name "PD1936"
-    setprop ro.product.board "msmnile"
-    setprop ro.board.platform "msmnile"
-    setprop ro.vivo.product.platform "SM8150"
-    setprop ro.vivo.product.solution "QCOM"
-    setprop ro.vivo.hardware.version "PD1936MA"
-    setprop ro.board.bbk "MA"
-    setprop ro.vivo.board.version "MA"
-    setprop ro.build.expect.hardware "PD1936MA"
-    setprop ro.vivo.product.series "IQOO"
-    setprop ro.vivo.oem.support "yes"
+# USB/ADB configuration for recovery
+# Touchscreen properties are set in init.recovery.touch.rc on early-init
 
 on init
     # Ensure USB controller is set for ADB functionality
     setprop sys.usb.controller "a600000.dwc3"
     setprop sys.usb.configfs 1
-    # Ensure ADB is enabled in recovery
+    # Ensure ADB is enabled in recovery (MTP is disabled via TW_EXCLUDE_MTP)
     setprop persist.sys.usb.config "adb"
     setprop ro.adb.secure 0
-
-on boot
-    # Ensure touchupdate service starts after all properties are set
-    # The service is defined in init.recovery.touch.rc with seclabel u:r:recovery:s0
-    start touchupdate
