@@ -122,12 +122,12 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so
 
-# WiFi configuration files and VINTF manifests (required by wpa_supplicant and HAL services)
+# WiFi configuration files (required by wpa_supplicant)
+# NOTE: VINTF manifests (compatibility_matrix.xml, manifest.xml) are excluded -
+#       built from source by system/libvintf/ and cause overriding conflicts.
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/etc/wifi/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/wifi/WCNSS_qcom_cfg.ini \
-    $(LOCAL_PATH)/recovery/root/vendor/etc/wifi/wpa_supplicant.conf:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/wifi/wpa_supplicant.conf \
-    $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/compatibility_matrix.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/vintf/compatibility_matrix.xml \
-    $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/manifest.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/vintf/manifest.xml
+    $(LOCAL_PATH)/recovery/root/vendor/etc/wifi/wpa_supplicant.conf:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/wifi/wpa_supplicant.conf
 
 # WiFi init script (loaded via import in init.recovery.qcom.rc)
 PRODUCT_COPY_FILES += \
