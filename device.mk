@@ -114,8 +114,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/bin/qca_cld3_wlan.ko:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qca_cld3_wlan.ko
 
 # WiFi proprietary libraries (required by cnss-daemon, wpa_supplicant, etc.)
+# NOTE: libcld80211.so is excluded - built from source by hardware/qcom/wlan/
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/libcld80211.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libcld80211.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeystore-engine-wifi-hidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libkeystore-engine-wifi-hidl.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeystore-wifi-hidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libkeystore-wifi-hidl.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.0.so \
