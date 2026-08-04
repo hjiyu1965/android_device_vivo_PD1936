@@ -97,6 +97,41 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libssl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libssl.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libtime_genoff.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libtime_genoff.so
 
+# WiFi proprietary binaries (from init.recovery.wifi.rc - all services reference these)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/cnss-daemon:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/cnss-daemon \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/irsc_util:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/irsc_util \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/pd-mapper:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/pd-mapper \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/pm-proxy:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/pm-proxy \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/pm-service:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/pm-service \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/qrtr-ns:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qrtr-ns \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/rmt_storage:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/rmt_storage \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/tftp_server:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/tftp_server \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/wpa_supplicant:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/wpa_supplicant \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/wpa_cli:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/wpa_cli \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/qca_cld3_wlan.ko:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qca_cld3_wlan.ko
+
+# WiFi proprietary libraries (required by cnss-daemon, wpa_supplicant, etc.)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libcld80211.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libcld80211.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeystore-engine-wifi-hidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libkeystore-engine-wifi-hidl.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeystore-wifi-hidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libkeystore-wifi-hidl.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.0.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.1.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.1.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so
+
+# WiFi configuration files and VINTF manifests (required by wpa_supplicant and HAL services)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/vendor/etc/wifi/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/wifi/WCNSS_qcom_cfg.ini \
+    $(LOCAL_PATH)/recovery/root/vendor/etc/wifi/wpa_supplicant.conf:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/wifi/wpa_supplicant.conf \
+    $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/compatibility_matrix.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/vintf/compatibility_matrix.xml \
+    $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/manifest.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/vintf/manifest.xml
+
+# WiFi init script (loaded via import in init.recovery.qcom.rc)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/init.recovery.wifi.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.wifi.rc
+
 # Critical vivo device properties for touchscreen firmware loading
 # vts_app_recovery reads ro.build.oem.projects to match firmware files
 # Without these, it reports "no firmware for product:" (empty product name)
