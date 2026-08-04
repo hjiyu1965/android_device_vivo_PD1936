@@ -114,12 +114,11 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/bin/qca_cld3_wlan.ko:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qca_cld3_wlan.ko
 
 # WiFi proprietary libraries (required by cnss-daemon, wpa_supplicant, etc.)
-# NOTE: libcld80211.so is excluded - built from source by hardware/qcom/wlan/
+# NOTE: libcld80211.so, libkeystore-engine-wifi-hidl.so, libkeystore-wifi-hidl.so,
+#       vendor.qti.hardware.wifi.supplicant@2.0/2.1.so are all built from source
+#       by hardware/qcom/wlan/, frameworks/opt/net/wifi/, hardware/interfaces/wifi/.
+#       Only vivo-proprietary WiFi libraries are kept as prebuilts.
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeystore-engine-wifi-hidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libkeystore-engine-wifi-hidl.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeystore-wifi-hidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libkeystore-wifi-hidl.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.0.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.1.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.1.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so
 
