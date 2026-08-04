@@ -1,6 +1,6 @@
 # vivo PD1936 recovery initialization
-# USB/ADB configuration for recovery
-# Touchscreen properties are set in init.recovery.touch.rc on early-init
+# USB/ADB config + touchscreen firmware update trigger
+# This file is confirmed to be loaded by TWRP init (ADB properties work)
 
 on init
     # Ensure USB controller is set for ADB functionality
@@ -9,3 +9,11 @@ on init
     # Ensure ADB is enabled in recovery (MTP is disabled via TW_EXCLUDE_MTP)
     setprop persist.sys.usb.config "adb"
     setprop ro.adb.secure 0
+
+on boot
+    # Start touchscreen firmware update service
+    # vts_app_recovery needs ro.build.oem.projects (set in init.recovery.touch.rc on early-init)
+    # and vendor/firmware/*.bin files to match the product name
+    start touchupdate
+    # Backup: also run directly via exec in case service start fails
+    exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
