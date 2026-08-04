@@ -4,51 +4,50 @@
 
 # Device         Mount point       FS type    Source                                                     Flags
 
-# System (AVB verified)
-/system          ext4              /dev/block/bootdevice/by-name/system                       flags=display=;avb
-/system_root     auto              /dev/block/bootdevice/by-name/system                       flags=display=
+# System (system_root_image)
+/system          ext4              /dev/block/bootdevice/by-name/system                       flags=display=System;slotselect
+/system_root     auto              /dev/block/bootdevice/by-name/system                       flags=display=System;slotselect
 
 # Vendor
-/vendor          ext4              /dev/block/bootdevice/by-name/vendor                       flags=display=vendor
+/vendor          ext4              /dev/block/bootdevice/by-name/vendor                       flags=display=Vendor;slotselect
 
 # Metadata (needed for FBE key storage)
-/metadata        ext4              /dev/block/bootdevice/by-name/metadata                     flags=display=metadata
+/metadata        ext4              /dev/block/bootdevice/by-name/metadata                     flags=display=Metadata;slotselect
 
 # Data (FBE + ICE encryption, F2FS filesystem)
-/data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=data;encryptable=/data;fileencryption=ice,wrappedkey;length=-16384
+/data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=Data;encryptable=/data;fileencryption=ice,wrappedkey;length=-16384;slotselect
 
 # Cache
-/cache           ext4              /dev/block/bootdevice/by-name/cache                        flags=display=cache
+/cache           ext4              /dev/block/bootdevice/by-name/cache                        flags=display=Cache;slotselect
 
 # OEM
-/oem             ext4              /dev/block/bootdevice/by-name/oem                           flags=display=oem
+/oem             ext4              /dev/block/bootdevice/by-name/oem                           flags=display=OEM;slotselect
 
 # External SD card
-/storage/sdcard1 vfat              /devices/platform/soc/8804000.sdhci/mmc_host*              flags=display=sdcard1;storage;removable
-/storage/sdcard1 vfat              /devices/platform/soc/1da4000.ufshc_card/host*             flags=display=sdcard1;storage;removable
+/external_sd     vfat              /devices/platform/soc/8804000.sdhci/mmc_host*              flags=display=External_SD;storage;removable;fsflags=utf8
+/external_sd     vfat              /devices/platform/soc/1da4000.ufshc_card/host*             flags=display=External_SD;storage;removable;fsflags=utf8
 
 # Modem firmware
-/vendor/firmware_mnt  vfat         /dev/block/bootdevice/by-name/modem                        flags=display=firmware_mnt
+/vendor/firmware_mnt  vfat         /dev/block/bootdevice/by-name/modem                        flags=display=Firmware;slotselect
 
 # DSP
-/vendor/dsp      ext4              /dev/block/bootdevice/by-name/dsp                           flags=display=dsp
+/vendor/dsp      ext4              /dev/block/bootdevice/by-name/dsp                           flags=display=DSP;slotselect
 
 # Persist
-/mnt/vendor/persist  ext4          /dev/block/bootdevice/by-name/persist                      flags=display=persist
+/mnt/vendor/persist  ext4          /dev/block/bootdevice/by-name/persist                      flags=display=Persist;slotselect
 
 # Bluetooth firmware
-/vendor/bt_firmware  vfat          /dev/block/bootdevice/by-name/bluetooth                    flags=display=bt_firmware
+/vendor/bt_firmware  vfat          /dev/block/bootdevice/by-name/bluetooth                    flags=display=BT_Firmware;slotselect
 
 # Raw partitions
-/misc            emmc              /dev/block/bootdevice/by-name/misc                         flags=display=misc
-/boot            emmc              /dev/block/bootdevice/by-name/boot                         flags=display=boot
-/recovery        emmc              /dev/block/bootdevice/by-name/recovery                     flags=display=recovery
-/vbmeta          emmc              /dev/block/bootdevice/by-name/vbmeta                       flags=display=vbmeta
-/dtbo            emmc              /dev/block/bootdevice/by-name/dtbo                         flags=display=dtbo
+/misc            emmc              /dev/block/bootdevice/by-name/misc                         flags=display=Misc
+/boot            emmc              /dev/block/bootdevice/by-name/boot                         flags=display=Boot;slotselect
+/recovery        emmc              /dev/block/bootdevice/by-name/recovery                     flags=display=Recovery
+/vbmeta          emmc              /dev/block/bootdevice/by-name/vbmeta                       flags=display=Vbmeta;slotselect
+/dtbo            emmc              /dev/block/bootdevice/by-name/dtbo                         flags=display=DTBO;slotselect
 
 # USB OTG
-/storage/usbotg  vfat              /devices/platform/soc/*.ssusb/*.dwc3/xhci-hcd.*.auto*      flags=display=usbotg;storage;removable
+/usbotg          vfat              /devices/platform/soc/*.ssusb/*.dwc3/xhci-hcd.*.auto*      flags=display=USB_OTG;storage;removable;fsflags=utf8
 
-# Additional mounts
-/otg             vfat              /dev/block/sdg1                                            flags=display=otg
-/sdcard          vfat              /dev/block/mmcblk1p1                                       flags=display=sdcard
+# RAM disk (needed for TWRP)
+/ramdisk         ramdisk           ramdisk                                                    flags=display=Ramdisk
