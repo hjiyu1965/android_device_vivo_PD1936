@@ -6,39 +6,40 @@
 # Device         Mount point       FS type    Source                                                     Flags
 
 # System (system_root_image)
-/system          ext4              /dev/block/bootdevice/by-name/system                       flags=display=System
-/system_root     auto              /dev/block/bootdevice/by-name/system                       flags=display=System
+/system          ext4              /dev/block/bootdevice/by-name/system                       flags=display=System;wait
+/system_root     auto              /dev/block/bootdevice/by-name/system                       flags=display=System;wait
 
 # Vendor
-/vendor          ext4              /dev/block/bootdevice/by-name/vendor                       flags=display=Vendor
+/vendor          ext4              /dev/block/bootdevice/by-name/vendor                       flags=display=Vendor;wait
 
-# Metadata (needed for FBE key storage)
-/metadata        ext4              /dev/block/bootdevice/by-name/metadata                     flags=display=Metadata
+# Metadata (needed for FBE key storage - MUST mount before /data)
+/metadata        ext4              /dev/block/bootdevice/by-name/metadata                     flags=display=Metadata;wait;check
 
 # Data (FBE + ICE encryption, F2FS filesystem)
-/data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=Data;encryptable=/data;fileencryption=ice,wrappedkey;length=-16384
+# latemount is REQUIRED for FBE - TWRP mounts this after crypto services are ready
+/data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=Data;latemount;wait;check;encryptable=/data;fileencryption=ice,wrappedkey;length=-16384
 
 # Cache
-/cache           ext4              /dev/block/bootdevice/by-name/cache                        flags=display=Cache
+/cache           ext4              /dev/block/bootdevice/by-name/cache                        flags=display=Cache;wait
 
 # OEM
-/oem             ext4              /dev/block/bootdevice/by-name/oem                           flags=display=OEM
+/oem             ext4              /dev/block/bootdevice/by-name/oem                           flags=display=OEM;wait
 
 # External SD card
 /external_sd     vfat              /devices/platform/soc/8804000.sdhci/mmc_host*              flags=display=External_SD;storage;removable;fsflags=utf8
 /external_sd     vfat              /devices/platform/soc/1da4000.ufshc_card/host*             flags=display=External_SD;storage;removable;fsflags=utf8
 
 # Modem firmware
-/vendor/firmware_mnt  vfat         /dev/block/bootdevice/by-name/modem                        flags=display=Firmware
+/vendor/firmware_mnt  vfat         /dev/block/bootdevice/by-name/modem                        flags=display=Firmware;wait
 
 # DSP
-/vendor/dsp      ext4              /dev/block/bootdevice/by-name/dsp                           flags=display=DSP
+/vendor/dsp      ext4              /dev/block/bootdevice/by-name/dsp                           flags=display=DSP;wait
 
-# Persist
-/mnt/vendor/persist  ext4          /dev/block/bootdevice/by-name/persist                      flags=display=Persist
+# Persist (needs wait,check for proper mounting)
+/mnt/vendor/persist  ext4          /dev/block/bootdevice/by-name/persist                      flags=display=Persist;wait;check
 
 # Bluetooth firmware
-/vendor/bt_firmware  vfat          /dev/block/bootdevice/by-name/bluetooth                    flags=display=BT_Firmware
+/vendor/bt_firmware  vfat          /dev/block/bootdevice/by-name/bluetooth                    flags=display=BT_Firmware;wait
 
 # Raw partitions
 /misc            emmc              /dev/block/bootdevice/by-name/misc                         flags=display=Misc

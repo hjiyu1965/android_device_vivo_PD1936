@@ -151,7 +151,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.build.expect.hardware=PD1936MA \
     ro.vivo.product.series=IQOO \
     ro.vivo.oem.support=yes \
-    ro.minui.pixel_format=RGBX_8888
+    ro.minui.pixel_format=RGBX_8888 \
+    vendor.gatekeeper.disable_spu=true
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.build.oem.projects=PD1936 PD1936B PD1936C PD1936D PD1936E PD1936G \
@@ -166,7 +167,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.build.expect.hardware=PD1936MA \
     ro.vivo.product.series=IQOO \
     ro.vivo.oem.support=yes \
-    ro.minui.pixel_format=RGBX_8888
+    ro.minui.pixel_format=RGBX_8888 \
+    vendor.gatekeeper.disable_spu=true
 
 # USB controller property (from boot cmdline: androidboot.usbcontroller=a600000.dwc3)
 # Also ensure ADB is available in recovery

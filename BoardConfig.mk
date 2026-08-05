@@ -110,6 +110,11 @@ TW_INCLUDE_CRYPTO_FBE := true
 # Qualcomm crypto hardware support
 TARGET_CRYPTFS_HW_VERSION := qcom
 
+# FBE decryption: use ICE (Inline Crypto Engine) for hardware encryption
+# vivo PD1936 uses ICE + wrappedkey for FBE
+TW_INCLUDE_FBE_METADATA_DECRYPT := true
+TW_USE_FSCRYPT_POLICY := true
+
 # TWRP brightness control (from init.recovery.qcom.rc: brightness 200)
 TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
 TW_MAX_BRIGHTNESS := 255

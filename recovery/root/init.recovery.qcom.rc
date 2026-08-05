@@ -49,6 +49,8 @@ on early-init
     setprop ro.build.expect.hardware "PD1936MA"
     setprop ro.vivo.product.series "IQOO"
     setprop ro.vivo.oem.support "yes"
+    # FBE decryption: gatekeeper SPU disable (from stock prop.default)
+    setprop vendor.gatekeeper.disable_spu true
 
 on init
     write /sys/class/backlight/panel0-backlight/brightness 200
@@ -66,11 +68,15 @@ on fs
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
 on post-fs-data
+    # Trigger crypto services for FBE decryption
+    # This starts qseecomd, keymaster-4-0, gatekeeper-1-0, wait_for_keymaster
+    setprop recovery.service 1
     # Run touchscreen firmware update after filesystems are ready
-    # vts_app_recovery reads ro.build.oem.projects to find firmware files
     exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
 
 on boot
+    # Ensure crypto services are started
+    setprop recovery.service 1
     # Backup trigger for touchscreen firmware update
     exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
 
