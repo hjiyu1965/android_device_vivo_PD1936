@@ -18,6 +18,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/ueventd.qcom.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/ueventd.qcom.rc
 
 # vivo proprietary binaries (NOT built from source by AOSP/TWRP)
+# wait_for_keymaster is a vivo/Qualcomm-specific binary for FBE decryption
+# (NOT built by minimal TWRP manifest - must include as prebuilt)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/bin/aria2c:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/aria2c \
     $(LOCAL_PATH)/recovery/root/system/bin/guardianangle:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/guardianangle \
@@ -25,13 +27,14 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/bin/rec_bigdata:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/rec_bigdata \
     $(LOCAL_PATH)/recovery/root/system/bin/vivofbe:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivofbe \
     $(LOCAL_PATH)/recovery/root/system/bin/vivotool:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivotool \
-    $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery
+    $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery \
+    $(LOCAL_PATH)/recovery/root/system/bin/wait_for_keymaster:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/wait_for_keymaster
 
 # FBE decryption chain - vendor/bin HAL services (from stock recovery.img)
-# NOTE: wait_for_keymaster, keystore, keystore_auth, logd, servicemanager,
-#       hwservicemanager, ashmemd, tombstoned, android.hardware.boot@1.0-service,
-#       android.hardware.health@2.0-service are built from source by AOSP.
-#       Only truly proprietary HAL services are prebuilts.
+# NOTE: keystore, keystore_auth, logd, servicemanager, hwservicemanager,
+#       ashmemd, tombstoned are built from source by AOSP.
+#       wait_for_keymaster is included as prebuilt above (vivo/Qualcomm-specific).
+#       Only truly proprietary HAL services are prebuilts here.
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/bin/qseecomd:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qseecomd \
     $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.keymaster@4.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.keymaster@4.0-service-qti \
