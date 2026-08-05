@@ -56,44 +56,6 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/librpmb.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/librpmb.so
 
-# Ensure TWRP includes FBE decryption libraries in recovery ramdisk
-# These are built from source by AOSP/TWRP - PRODUCT_PACKAGES ensures they're
-# included in the recovery image. ALLOW_MISSING_DEPENDENCIES handles any that don't exist.
-PRODUCT_PACKAGES += \
-    libcrypto \
-    libcrypto_utils \
-    libhidlbase \
-    libhwbinder \
-    libbinder \
-    libutils \
-    libcutils \
-    libbase \
-    liblog \
-    libselinux \
-    libhardware \
-    libkeymaster4support \
-    libkeymaster4_1support \
-    libkeymaster_messages \
-    libkeymaster_portable \
-    libkeymasterdeviceutils \
-    libkeymasterutils \
-    libkeystore_binder \
-    libkeystore_aidl \
-    libkeystore_parcelables \
-    libkeystore-attestation-application-id \
-    libkeyutils \
-    libsoft_attestation_cert \
-    libsoftkeymasterdevice \
-    libprotobuf-cpp-lite \
-    libsqlite \
-    libtinyxml2 \
-    libstdc++ \
-    vndservicemanager \
-    hwservicemanager \
-    servicemanager \
-    wait_for_keymaster \
-    keystore
-
 # Qualcomm vendor proprietary libraries and firmware
 # NOTE: HIDL interface libraries (vendor.display.config@1.0.so,
 #       vendor.qti.hardware.tui_comm@1.0.so) are excluded because
