@@ -29,9 +29,9 @@ PRODUCT_COPY_FILES += \
 
 # FBE decryption chain - vendor/bin HAL services (from stock recovery.img)
 # NOTE: wait_for_keymaster, keystore, keystore_auth, logd, servicemanager,
-#       hwservicemanager, ashmemd, tombstoned, vndservicemanager,
-#       android.hardware.boot@1.0-service, android.hardware.health@2.0-service
-#       are built from source by AOSP. Only truly proprietary HAL services are prebuilts.
+#       hwservicemanager, ashmemd, tombstoned, android.hardware.boot@1.0-service,
+#       android.hardware.health@2.0-service are built from source by AOSP.
+#       Only truly proprietary HAL services are prebuilts.
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/bin/qseecomd:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qseecomd \
     $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.keymaster@4.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.keymaster@4.0-service-qti \
@@ -47,14 +47,14 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libvivogatekeeper.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libvivogatekeeper.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libwifikeystorehalext.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libwifikeystorehalext.so
 
-# Keymaster / FBE decryption proprietary libraries (from stock recovery.img)
-# Only truly proprietary .so files that AOSP/TWRP does NOT build from source.
-# All standard AOSP libs (libcrypto, libhidlbase, libkeymaster*, libkeystore*,
-# android.hardware.*, etc.) are built from source and cause overriding conflicts.
+# Keymaster / Keystore / FBE decryption libraries (from stock recovery.img)
+# NOTE: libkeymaster*, libkeystore*, libkeyutils, libsoftkeymasterdevice,
+#       libsoft_attestation_cert, librpmb, libminuivivo, librecovery_ui*
+#       are all built from source by AOSP/TWRP and cause overriding conflicts.
+# Only truly proprietary libs are kept as prebuilts:
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libqcbor.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqcbor.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/librpmb.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/librpmb.so
+    $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so
 
 # Qualcomm vendor proprietary libraries and firmware
 # NOTE: HIDL interface libraries (vendor.display.config@1.0.so,
@@ -152,11 +152,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.vivo.product.series=IQOO \
     ro.vivo.oem.support=yes \
     ro.minui.pixel_format=RGBX_8888 \
-    vendor.gatekeeper.disable_spu=true \
-    ro.vivo.cipherchain.tee.support=yes \
-    ro.crypto.volume.filenames_mode=aes-256-cts \
-    ro.crypto.set_dun=true \
-    ro.hardware.keystore_desede=true
+    vendor.gatekeeper.disable_spu=true
 
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.build.oem.projects=PD1936 PD1936B PD1936C PD1936D PD1936E PD1936G \
@@ -172,11 +168,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.vivo.product.series=IQOO \
     ro.vivo.oem.support=yes \
     ro.minui.pixel_format=RGBX_8888 \
-    vendor.gatekeeper.disable_spu=true \
-    ro.vivo.cipherchain.tee.support=yes \
-    ro.crypto.volume.filenames_mode=aes-256-cts \
-    ro.crypto.set_dun=true \
-    ro.hardware.keystore_desede=true
+    vendor.gatekeeper.disable_spu=true
 
 # USB controller property (from boot cmdline: androidboot.usbcontroller=a600000.dwc3)
 # Also ensure ADB is available in recovery
