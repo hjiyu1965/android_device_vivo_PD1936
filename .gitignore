@@ -68,6 +68,7 @@ recovery/root/vendor/lib64/vendor.qti.hardware.wifi.supplicant@*.so
 # AOSP/TWRP source-built binaries - DO NOT include as prebuilts
 recovery/root/system/bin/keystore
 recovery/root/system/bin/keystore_auth
+recovery/root/system/bin/wait_for_keymaster
 recovery/root/system/bin/logd
 recovery/root/system/bin/servicemanager
 recovery/root/system/bin/hwservicemanager
