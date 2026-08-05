@@ -105,7 +105,12 @@ jobs:
 
       - name: 同步源码
         run: |
-          repo sync -j$(nproc --all) --force-sync
+          for i in 1 2 3 4 5; do
+            echo "=== Sync attempt $i ==="
+            repo sync -j$(nproc --all) --force-sync -f --no-clone-bundle && break
+            echo "Sync failed, retrying in 30s..."
+            sleep 30
+          done
         working-directory: workspace
 
       - name: 克隆设备树
