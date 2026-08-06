@@ -113,9 +113,6 @@ TW_EXCLUDE_MTP := true
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 
-# Qualcomm crypto hardware support
-TARGET_CRYPTFS_HW_VERSION := qcom
-
 # FBE decryption: use ICE (Inline Crypto Engine) for hardware encryption
 # vivo PD1936 uses ICE + wrappedkey for FBE
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
