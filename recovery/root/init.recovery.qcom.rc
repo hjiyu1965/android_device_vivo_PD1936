@@ -60,24 +60,23 @@ on init
 
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}
-    #write /sys/class/udc/${ro.boot.usbcontroller}/device/../mode peripheral
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
 on post-fs-data
-    # Trigger crypto services for FBE decryption
+    # Trigger crypto services for FBE decryption (non-blocking)
     # This starts qseecomd, keymaster-4-0, gatekeeper-1-0, wait_for_keymaster
     setprop recovery.service 1
-    # Run touchscreen firmware update after filesystems are ready
-    exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
+    # Start touchscreen firmware update (non-blocking service, not exec)
+    start touchupdate
 
 on boot
-    # Ensure crypto services are started
+    # Ensure crypto services are started (non-blocking)
     setprop recovery.service 1
-    # Backup trigger for touchscreen firmware update
-    exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
+    # Start touchscreen firmware update again as backup (non-blocking)
+    start touchupdate
 
 service touchupdate /system/bin/vts_app_recovery --update
     class core

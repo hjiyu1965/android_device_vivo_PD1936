@@ -9,8 +9,8 @@ on property:recovery.fastboot_mode=1
 on property:recovery.service=1
     start keymaster-4-0
     start gatekeeper-1-0
-    #wait_for_prop hwservicemanager.ready true
-    exec_start wait_for_keymaster
+    # Use start instead of exec_start to avoid blocking init boot
+    start wait_for_keymaster
     start guardianangle
     setprop recovery.state.services.ready 1
 
