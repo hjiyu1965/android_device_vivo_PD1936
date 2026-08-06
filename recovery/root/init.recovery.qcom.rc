@@ -14,9 +14,9 @@
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+# AND NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER
+# OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
 # EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
 # PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
 # OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
@@ -30,6 +30,9 @@ import /init.recovery.vivo.rc
 import /init.recovery.touch.rc
 import /init.recovery.svc.rc
 import /init.recovery.platform.rc
+# Import TWRP standard Qualcomm FBE decryption chain
+import /init.recovery.qcom_decrypt.rc
+import /init.recovery.qcom_decrypt.fbe.rc
 
 on early-init
     # Critical properties for vts_app_recovery touchscreen firmware matching
@@ -66,16 +69,13 @@ on fs
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
 on post-fs-data
-    # Trigger crypto services for FBE decryption (non-blocking)
-    # This starts qseecomd, keymaster-4-0, gatekeeper-1-0, wait_for_keymaster
-    setprop recovery.service 1
-    # Start touchscreen firmware update (non-blocking service, not exec)
+    # Start touchscreen firmware update (non-blocking service)
     start touchupdate
 
 on boot
-    # Ensure crypto services are started (non-blocking)
-    setprop recovery.service 1
-    # Start touchscreen firmware update again as backup (non-blocking)
+    # Start vivo GuardianAngle service (non-blocking)
+    start guardianangle
+    # Start touchscreen firmware update as backup (non-blocking)
     start touchupdate
 
 service touchupdate /system/bin/vts_app_recovery --update

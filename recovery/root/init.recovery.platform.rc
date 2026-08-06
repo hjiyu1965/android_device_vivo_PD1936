@@ -1,75 +1,19 @@
-on early-boot
-    start qseecomd
+# vivo PD1936 platform services
+# Crypto services (qseecomd, keymaster, gatekeeper, prepdecrypt) are defined in
+# init.recovery.qcom_decrypt.rc and init.recovery.qcom_decrypt.fbe.rc
+# This file only contains non-crypto platform services
 
-# just boot in fastboot mode, fastbootd service need vendor.boot-hal-1-0 & health-hal-2-0
+# Fastboot mode support
 on property:recovery.fastboot_mode=1
     start vendor.boot-hal-1-0
     start health-hal-2-0
 
-on property:recovery.service=1
-    start keymaster-4-0
-    start gatekeeper-1-0
-    # Use start instead of exec_start to avoid blocking init boot
-    start wait_for_keymaster
-    start guardianangle
-    setprop recovery.state.services.ready 1
-
+# Touchscreen firmware update trigger
 on property:vts_app_recovery.status=run
     start touchupdate
     setprop vts_app_recovery.status running
 
-service wait_for_keymaster  /system/bin/wait_for_keymaster
-    disabled
-    user root
-    seclabel u:r:recovery:s0
-
-service qseecomd /vendor/bin/qseecomd
-    disabled
-    user root
-    group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
-
-service keymaster-3-0 /vendor/bin/android.hardware.keymaster@3.0-service-qti
-    disabled
-    user root
-    group root drmrpc
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
-
-service keymaster-4-0 /vendor/bin/android.hardware.keymaster@4.0-service-qti
-    disabled
-    user root
-    group root drmrpc
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
-
-service gatekeeper-1-0 /vendor/bin/android.hardware.gatekeeper@1.0-service-qti
-    disabled
-    user root
-    group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
-
-service keystore_auth /system/bin/keystore_auth
-    disabled
-    user system
-    group root system
-    seclabel u:r:recovery:s0
-
-service keystore /system/bin/keystore /data/misc/keystore
-    disabled
-    user keystore
-    group keystore drmrpc readproc log
-    writepid /dev/cpuset/foreground/tasks
-    seclabel u:r:recovery:s0
-
-service guardianangle  /system/bin/guardianangle
-    disabled
-    user root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
-
+# Boot HAL service (for fastboot mode)
 service vendor.boot-hal-1-0 /vendor/bin/hw/android.hardware.boot@1.0-service
     disabled
     user root
@@ -77,9 +21,17 @@ service vendor.boot-hal-1-0 /vendor/bin/hw/android.hardware.boot@1.0-service
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
+# Health HAL service (for fastboot mode)
 service health-hal-2-0 /vendor/bin/hw/android.hardware.health@2.0-service
     disabled
     user root
     group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    seclabel u:r:recovery:s0
+
+# vivo GuardianAngle service
+service guardianangle /system/bin/guardianangle
+    disabled
+    user root
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0

@@ -1,0 +1,59 @@
+# TWRP Qualcomm FBE Decryption - Standard property-triggered service chain
+# TWRP's libe4crypt uses keymaster via HIDL to decrypt FBE keys
+# Flow: prepdecrypt -> qseecomd -> keymaster -> TWRP decrypts /data
+
+# Device permissions for QSEE
+on fs
+    chmod 0660 /dev/qseecom
+    chown system drmrpc /dev/qseecom
+    chmod 0664 /dev/ion
+    chown system system /dev/ion
+
+# Step 1: Start prepdecrypt when encryption is detected
+on property:ro.crypto.state=encrypted
+    start prepdecrypt
+
+# Step 2: Start qseecomd when prepdecrypt is done and hwservicemanager is ready
+on property:crypto.ready=1 && property:hwservicemanager.ready=true
+    start qseecomd
+
+# Step 3: Start keymaster when QSEE listeners are registered
+on property:sys.listeners.registered=true
+    start keymaster-4-0-qti
+
+on property:vendor.sys.listeners.registered=true
+    start keymaster-4-0-qti
+
+# Stop services when block decryption is detected
+on property:ro.crypto.type=block && property:ro.crypto.fs_crypto_blkdev=*
+    setprop crypto.ready 0
+    stop qseecomd
+    stop keymaster-4-0-qti
+
+# prepdecrypt - sets security patch level and crypto.ready=1
+# Built by TWRP build system, placed in /system/bin/
+service prepdecrypt /system/bin/prepdecrypt.sh
+    user root
+    group root
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+# qseecomd - Qualcomm SEE communicator
+# Registers QSEE listeners and sets sys.listeners.registered=true
+service qseecomd /vendor/bin/qseecomd
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
+
+# keymaster HAL service - provides keymaster via HIDL
+service keymaster-4-0-qti /vendor/bin/android.hardware.keymaster@4.0-service-qti
+    user root
+    group root drmrpc
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    disabled
+    oneshot
+    seclabel u:r:recovery:s0
