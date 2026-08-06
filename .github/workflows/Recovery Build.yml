@@ -71,9 +71,8 @@ jobs:
 
       - name: 准备编译环境
         run: |
-          sudo apt update && sudo apt upgrade -y
+          sudo apt update
           DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
-              linux-modules-extra-$(uname -r) \
               gperf gcc-multilib gcc-10-multilib g++-multilib g++-10-multilib \
               libc6-dev lib32ncurses-dev x11proto-core-dev libx11-dev tree lib32z-dev libgl1-mesa-dev libxml2-utils \
               xsltproc bc ccache lib32readline-dev lib32z1-dev liblz4-tool libncurses-dev libsdl1.2-dev \
@@ -131,8 +130,12 @@ jobs:
 
       - name: 同步设备依赖
         run: |
-          bash ${GITHUB_WORKSPACE}/scripts/convert.sh ${{ github.event.inputs.DEVICE_PATH }}/${{ steps.buildtree.outputs.value }}.dependencies
-          repo sync -j$(nproc --all)
+          if [ -f ${{ github.event.inputs.DEVICE_PATH }}/${{ steps.buildtree.outputs.value }}.dependencies ]; then
+            bash ${GITHUB_WORKSPACE}/scripts/convert.sh ${{ github.event.inputs.DEVICE_PATH }}/${{ steps.buildtree.outputs.value }}.dependencies
+            repo sync -j$(nproc --all) || true
+          else
+            echo "No dependencies file found, skipping"
+          fi
         working-directory: ${{ steps.pwd.outputs.workspace-folder }}
         continue-on-error: true
 
@@ -145,7 +148,7 @@ jobs:
         run: |
           source build/envsetup.sh
           export ALLOW_MISSING_DEPENDENCIES=true
-          lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
+          lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
         working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
       - name: 上传到 Release

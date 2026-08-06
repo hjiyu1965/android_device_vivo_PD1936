@@ -1,6 +1,5 @@
 on early-boot
     start qseecomd
-    start cryptfshw-1-0
 
 # just boot in fastboot mode, fastbootd service need vendor.boot-hal-1-0 & health-hal-2-0
 on property:recovery.fastboot_mode=1
@@ -28,30 +27,28 @@ service qseecomd /vendor/bin/qseecomd
     disabled
     user root
     group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
 service keymaster-3-0 /vendor/bin/android.hardware.keymaster@3.0-service-qti
     disabled
     user root
     group root drmrpc
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
 service keymaster-4-0 /vendor/bin/android.hardware.keymaster@4.0-service-qti
     disabled
     user root
     group root drmrpc
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
 service gatekeeper-1-0 /vendor/bin/android.hardware.gatekeeper@1.0-service-qti
     disabled
     user root
     group root
-    seclabel u:r:recovery:s0
-
-service cryptfshw-1-0 /vendor/bin/vendor.qti.hardware.cryptfshw@1.0-service-qti
-    disabled
-    user root
-    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
 service keystore_auth /system/bin/keystore_auth
@@ -70,16 +67,19 @@ service keystore /system/bin/keystore /data/misc/keystore
 service guardianangle  /system/bin/guardianangle
     disabled
     user root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
 service vendor.boot-hal-1-0 /vendor/bin/hw/android.hardware.boot@1.0-service
     disabled
     user root
     group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
 service health-hal-2-0 /vendor/bin/hw/android.hardware.health@2.0-service
     disabled
     user root
     group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
