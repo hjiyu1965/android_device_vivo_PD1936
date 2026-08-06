@@ -1,70 +1,85 @@
-# vivo PD1936 decryption services
-# Based on stock init.recovery.platform.rc, updated for TWRP:
-# - Paths changed from /vendor/bin/ to /system/bin/ (TWRP puts binaries in /system/bin/)
-# - Added setenv LD_LIBRARY_PATH for proper library loading
-# - Added prepdecrypt service for security patch level alignment
-# - Removed cryptfshw-1-0 (binary not available in recovery ramdisk)
-# - Removed keystore/keystore_auth (TWRP handles these separately)
-
-on fs
-    # Set permissions for qseecomd to work in recovery
-    chmod 0660 /dev/qseecom
-    chown system drmrpc /dev/qseecom
-    chmod 0664 /dev/ion
-    chown system system /dev/ion
-
 on early-boot
-    # vivo original trigger: start qseecomd early as a daemon
     start qseecomd
+    start cryptfshw-1-0
 
-on property:ro.crypto.state=encrypted
-    # Start prepdecrypt to set security patch levels and crypto.ready=1
-    start prepdecrypt
+# just boot in fastboot mode, fastbootd service need vendor.boot-hal-1-0 & health-hal-2-0
+on property:recovery.fastboot_mode=1
+    start vendor.boot-hal-1-0
+    start health-hal-2-0
 
-on property:crypto.ready=1
-    # Start keymaster and gatekeeper after prepdecrypt completes
-    # Use start (non-blocking) instead of exec_start (blocking) to avoid
-    # hanging init if keymaster fails to register
+on property:recovery.service=1
     start keymaster-4-0
     start gatekeeper-1-0
-    start wait_for_keymaster
+    #wait_for_prop hwservicemanager.ready true
+    exec_start wait_for_keymaster
+    start guardianangle
     setprop recovery.state.services.ready 1
 
-service prepdecrypt /system/bin/prepdecrypt.sh
-    user root
-    group root
-    disabled
-    oneshot
-    seclabel u:r:recovery:s0
+on property:vts_app_recovery.status=run
+    start touchupdate
+    setprop vts_app_recovery.status running
 
-service wait_for_keymaster /system/bin/wait_for_keymaster
+service wait_for_keymaster  /system/bin/wait_for_keymaster
     disabled
     user root
-    group root system
     seclabel u:r:recovery:s0
 
-service qseecomd /system/bin/qseecomd
+service qseecomd /vendor/bin/qseecomd
     disabled
     user root
     group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
-service keymaster-4-0 /system/bin/android.hardware.keymaster@4.0-service-qti
+service keymaster-3-0 /vendor/bin/android.hardware.keymaster@3.0-service-qti
     disabled
     user root
     group root drmrpc
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
-service gatekeeper-1-0 /system/bin/android.hardware.gatekeeper@1.0-service-qti
+service keymaster-4-0 /vendor/bin/android.hardware.keymaster@4.0-service-qti
+    disabled
+    user root
+    group root drmrpc
+    seclabel u:r:recovery:s0
+
+service gatekeeper-1-0 /vendor/bin/android.hardware.gatekeeper@1.0-service-qti
     disabled
     user root
     group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
-service guardianangle /system/bin/guardianangle
+service cryptfshw-1-0 /vendor/bin/vendor.qti.hardware.cryptfshw@1.0-service-qti
     disabled
     user root
+    group root
+    seclabel u:r:recovery:s0
+
+service keystore_auth /system/bin/keystore_auth
+    disabled
+    user system
+    group root system
+    seclabel u:r:recovery:s0
+
+service keystore /system/bin/keystore /data/misc/keystore
+    disabled
+    user keystore
+    group keystore drmrpc readproc log
+    writepid /dev/cpuset/foreground/tasks
+    seclabel u:r:recovery:s0
+
+service guardianangle  /system/bin/guardianangle
+    disabled
+    user root
+    seclabel u:r:recovery:s0
+
+service vendor.boot-hal-1-0 /vendor/bin/hw/android.hardware.boot@1.0-service
+    disabled
+    user root
+    group root
+    seclabel u:r:recovery:s0
+
+service health-hal-2-0 /vendor/bin/hw/android.hardware.health@2.0-service
+    disabled
+    user root
+    group root
     seclabel u:r:recovery:s0

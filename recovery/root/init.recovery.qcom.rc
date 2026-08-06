@@ -30,6 +30,7 @@ import /init.recovery.vivo.rc
 import /init.recovery.touch.rc
 import /init.recovery.svc.rc
 import /init.recovery.platform.rc
+import /init.recovery.wifi.rc
 
 on early-init
     # Critical properties for vts_app_recovery touchscreen firmware matching
@@ -57,8 +58,6 @@ on init
     setprop sys.usb.controller "a600000.dwc3"
     setprop persist.sys.usb.config "adb"
     setprop ro.adb.secure 0
-    # QCom decryption debug - enables prepdecrypt.sh verbose logging
-    setprop prepdecrypt.loglevel 2
 
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}
@@ -69,10 +68,15 @@ on fs
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
 on post-fs-data
+    # Trigger crypto services for FBE decryption
+    # This starts qseecomd, keymaster-4-0, gatekeeper-1-0, wait_for_keymaster
+    setprop recovery.service 1
     # Run touchscreen firmware update after filesystems are ready
     exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
 
 on boot
+    # Ensure crypto services are started
+    setprop recovery.service 1
     # Backup trigger for touchscreen firmware update
     exec u:r:recovery:s0 root root -- /system/bin/vts_app_recovery --update
 

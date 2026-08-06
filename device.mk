@@ -10,8 +10,8 @@ LOCAL_PATH := device/vivo/PD1936
 # Init scripts and configuration files
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery.fstab:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/etc/recovery.fstab \
-    $(LOCAL_PATH)/recovery/root/init.recovery.qcom.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.qcom.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.platform.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.platform.rc \
+    $(LOCAL_PATH)/recovery/root/init.recovery.qcom.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.qcom.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.svc.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.svc.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.touch.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.touch.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.vivo.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.vivo.rc \
@@ -22,22 +22,20 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/bin/aria2c:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/aria2c \
     $(LOCAL_PATH)/recovery/root/system/bin/guardianangle:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/guardianangle \
     $(LOCAL_PATH)/recovery/root/system/bin/little_buddy:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/little_buddy \
-    $(LOCAL_PATH)/recovery/root/system/bin/prepdecrypt.sh:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/prepdecrypt.sh \
     $(LOCAL_PATH)/recovery/root/system/bin/rec_bigdata:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/rec_bigdata \
     $(LOCAL_PATH)/recovery/root/system/bin/vivofbe:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivofbe \
     $(LOCAL_PATH)/recovery/root/system/bin/vivotool:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivotool \
-    $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery \
-    $(LOCAL_PATH)/recovery/root/system/bin/wait_for_keymaster:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/wait_for_keymaster
+    $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery
 
-# FBE decryption chain - HAL services moved to system/bin
-# TWRP QCom standard decryption rc files reference /system/bin/ paths
+# FBE decryption chain - vendor/bin HAL services (from stock recovery.img)
 # NOTE: wait_for_keymaster, keystore, keystore_auth, logd, servicemanager,
 #       hwservicemanager, ashmemd, tombstoned, android.hardware.boot@1.0-service,
 #       android.hardware.health@2.0-service are built from source by AOSP.
+#       Only truly proprietary HAL services are prebuilts.
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/system/bin/qseecomd:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/qseecomd \
-    $(LOCAL_PATH)/recovery/root/system/bin/android.hardware.keymaster@4.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/android.hardware.keymaster@4.0-service-qti \
-    $(LOCAL_PATH)/recovery/root/system/bin/android.hardware.gatekeeper@1.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/android.hardware.gatekeeper@1.0-service-qti
+    $(LOCAL_PATH)/recovery/root/vendor/bin/qseecomd:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qseecomd \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.keymaster@4.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.keymaster@4.0-service-qti \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.gatekeeper@1.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.gatekeeper@1.0-service-qti
 
 # vivo proprietary libraries (NOT built from source by AOSP/TWRP)
 PRODUCT_COPY_FILES += \
@@ -50,18 +48,13 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libwifikeystorehalext.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libwifikeystorehalext.so
 
 # Keymaster / Keystore / FBE decryption libraries (from stock recovery.img)
-# These are needed by android.hardware.keymaster@4.0-service-qti (Qualcomm proprietary HAL)
-# librpmb: Qualcomm RPMB secure storage (NOT built by AOSP)
-# libminuivivo: vivo proprietary display library (NOT built by AOSP)
-# libkeymasterdeviceutils / libkeymasterutils: keymaster device utils
-#   (AOSP also builds these from source, BUILD_BROKEN_DUP_RULES handles the conflict)
+# NOTE: libkeymaster*, libkeystore*, libkeyutils, libsoftkeymasterdevice,
+#       libsoft_attestation_cert, librpmb, libminuivivo, librecovery_ui*
+#       are all built from source by AOSP/TWRP and cause overriding conflicts.
+# Only truly proprietary libs are kept as prebuilts:
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libqcbor.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqcbor.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/librpmb.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/librpmb.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymasterdeviceutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymasterdeviceutils.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymasterutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymasterutils.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so
+    $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so
 
 # Qualcomm vendor proprietary libraries and firmware
 # NOTE: HIDL interface libraries (vendor.display.config@1.0.so,
@@ -75,6 +68,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/firmware/TP-CONFIG-FW-PD1936-LCMID33-VER0x002C.bin:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/TP-CONFIG-FW-PD1936-LCMID33-VER0x002C.bin \
     $(LOCAL_PATH)/recovery/root/vendor/firmware/TP-FW-PD1936-LCMID33-VER0x502100028.bin:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/TP-FW-PD1936-LCMID33-VER0x502100028.bin \
     $(LOCAL_PATH)/recovery/root/vendor/firmware/TP-FW-PD1936-LCMID33-VER0x50213002C.bin:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/TP-FW-PD1936-LCMID33-VER0x50213002C.bin \
+    $(LOCAL_PATH)/recovery/root/vendor/firmware/bdwlan.bin.4g:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/bdwlan.bin.4g \
     $(LOCAL_PATH)/recovery/root/vendor/firmware/touch_firmwares_recovery.bin:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/firmware/touch_firmwares_recovery.bin \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/hw/android.hardware.gatekeeper@1.0-impl-qti.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/hw/android.hardware.gatekeeper@1.0-impl-qti.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libGPreqcancel.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libGPreqcancel.so \
@@ -105,16 +99,39 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libssl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libssl.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libtime_genoff.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libtime_genoff.so
 
-# Qualcomm vendor services (needed for QTEE/modem, NOT WiFi-specific)
-# cnss-daemon, wpa_supplicant, wpa_cli, qca_cld3_wlan.ko removed - WiFi not needed in TWRP
+# WiFi proprietary binaries (from init.recovery.wifi.rc - all services reference these)
 PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/cnss-daemon:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/cnss-daemon \
     $(LOCAL_PATH)/recovery/root/vendor/bin/irsc_util:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/irsc_util \
     $(LOCAL_PATH)/recovery/root/vendor/bin/pd-mapper:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/pd-mapper \
     $(LOCAL_PATH)/recovery/root/vendor/bin/pm-proxy:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/pm-proxy \
     $(LOCAL_PATH)/recovery/root/vendor/bin/pm-service:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/pm-service \
     $(LOCAL_PATH)/recovery/root/vendor/bin/qrtr-ns:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qrtr-ns \
     $(LOCAL_PATH)/recovery/root/vendor/bin/rmt_storage:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/rmt_storage \
-    $(LOCAL_PATH)/recovery/root/vendor/bin/tftp_server:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/tftp_server
+    $(LOCAL_PATH)/recovery/root/vendor/bin/tftp_server:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/tftp_server \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/wpa_supplicant:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/wpa_supplicant \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/wpa_cli:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/wpa_cli \
+    $(LOCAL_PATH)/recovery/root/vendor/bin/qca_cld3_wlan.ko:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qca_cld3_wlan.ko
+
+# WiFi proprietary libraries (required by cnss-daemon, wpa_supplicant, etc.)
+# NOTE: libcld80211.so, libkeystore-engine-wifi-hidl.so, libkeystore-wifi-hidl.so,
+#       vendor.qti.hardware.wifi.supplicant@2.0/2.1.so are all built from source
+#       by hardware/qcom/wlan/, frameworks/opt/net/wifi/, hardware/interfaces/wifi/.
+#       Only vivo-proprietary WiFi libraries are kept as prebuilts.
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so
+
+# WiFi configuration files (required by wpa_supplicant)
+# NOTE: VINTF manifests (compatibility_matrix.xml, manifest.xml) are excluded -
+#       built from source by system/libvintf/ and cause overriding conflicts.
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/vendor/etc/wifi/WCNSS_qcom_cfg.ini:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/wifi/WCNSS_qcom_cfg.ini \
+    $(LOCAL_PATH)/recovery/root/vendor/etc/wifi/wpa_supplicant.conf:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/wifi/wpa_supplicant.conf
+
+# WiFi init script (loaded via import in init.recovery.qcom.rc)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/init.recovery.wifi.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.wifi.rc
 
 # Critical vivo device properties for touchscreen firmware loading
 # vts_app_recovery reads ro.build.oem.projects to match firmware files

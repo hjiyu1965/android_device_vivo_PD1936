@@ -10,12 +10,6 @@ DEVICE_PATH := device/vivo/PD1936
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
 
-# Allow prebuilt files that conflict with source-built files
-# Needed for libkeymasterdeviceutils.so and libkeymasterutils.so
-# (Qualcomm keymaster HAL needs stock versions, AOSP also builds from source)
-BUILD_BROKEN_DUP_RULES := true
-BUILD_BROKEN_ELF_PREBUILT := true
-
 # Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a
@@ -71,8 +65,8 @@ endif
 # Partitions
 BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
-BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296 # 96MB
-BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296 # 96MB
+BOARD_BOOTIMAGE_PARTITION_SIZE := 100663296
+BOARD_RECOVERYIMAGE_PARTITION_SIZE := 100663296
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_SYSTEMIMAGE_PARTITION_TYPE := ext4
 BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
@@ -113,17 +107,13 @@ TW_EXCLUDE_MTP := true
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
 
+# Qualcomm crypto hardware support
+TARGET_CRYPTFS_HW_VERSION := qcom
+
 # FBE decryption: use ICE (Inline Crypto Engine) for hardware encryption
 # vivo PD1936 uses ICE + wrappedkey for FBE
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := true
-
-# FBE decryption: use vivo's original decryption trigger mechanism
-# vivo's qseecomd doesn't set sys.listeners.registered, so TWRP's standard
-# qcom_decrypt chain doesn't work. Using vivo's original init.recovery.platform.rc
-# with early-boot and recovery.service triggers instead.
-# prepdecrypt.sh is manually included for security patch level alignment.
-TW_INCLUDE_RESETPROP := true
 
 # TWRP brightness control (from init.recovery.qcom.rc: brightness 200)
 TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
