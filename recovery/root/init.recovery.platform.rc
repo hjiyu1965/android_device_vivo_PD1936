@@ -23,10 +23,11 @@ on property:ro.crypto.state=encrypted
 
 on property:crypto.ready=1
     # Start keymaster and gatekeeper after prepdecrypt completes
+    # Use start (non-blocking) instead of exec_start (blocking) to avoid
+    # hanging init if keymaster fails to register
     start keymaster-4-0
     start gatekeeper-1-0
-    exec_start wait_for_keymaster
-    start guardianangle
+    start wait_for_keymaster
     setprop recovery.state.services.ready 1
 
 service prepdecrypt /system/bin/prepdecrypt.sh
