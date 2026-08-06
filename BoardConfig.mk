@@ -10,6 +10,12 @@ DEVICE_PATH := device/vivo/PD1936
 # For building with minimal manifest
 ALLOW_MISSING_DEPENDENCIES := true
 
+# Allow prebuilt files that conflict with source-built files
+# Needed for libkeymasterdeviceutils.so and libkeymasterutils.so
+# (Qualcomm keymaster HAL needs stock versions, AOSP also builds from source)
+BUILD_BROKEN_DUP_RULES := true
+BUILD_BROKEN_ELF_PREBUILT := true
+
 # Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-a

@@ -48,13 +48,18 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libwifikeystorehalext.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libwifikeystorehalext.so
 
 # Keymaster / Keystore / FBE decryption libraries (from stock recovery.img)
-# NOTE: libkeymaster*, libkeystore*, libkeyutils, libsoftkeymasterdevice,
-#       libsoft_attestation_cert, librpmb, libminuivivo, librecovery_ui*
-#       are all built from source by AOSP/TWRP and cause overriding conflicts.
-# Only truly proprietary libs are kept as prebuilts:
+# These are needed by android.hardware.keymaster@4.0-service-qti (Qualcomm proprietary HAL)
+# librpmb: Qualcomm RPMB secure storage (NOT built by AOSP)
+# libminuivivo: vivo proprietary display library (NOT built by AOSP)
+# libkeymasterdeviceutils / libkeymasterutils: keymaster device utils
+#   (AOSP also builds these from source, BUILD_BROKEN_DUP_RULES handles the conflict)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libqcbor.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqcbor.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so
+    $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/librpmb.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/librpmb.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymasterdeviceutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymasterdeviceutils.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymasterutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymasterutils.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so
 
 # Qualcomm vendor proprietary libraries and firmware
 # NOTE: HIDL interface libraries (vendor.display.config@1.0.so,
