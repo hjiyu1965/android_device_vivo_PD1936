@@ -148,21 +148,6 @@ jobs:
           lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make clean && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
         working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
-      - name: 填充 recovery.img 到分区大小 (96MB)
-        run: |
-          IMG="${{ steps.pwd.outputs.workspace-folder }}/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img"
-          PARTITION_SIZE=100663296
-          CURRENT_SIZE=$(stat -c%s "$IMG")
-          echo "当前 recovery.img 大小: $CURRENT_SIZE bytes ($(( CURRENT_SIZE / 1024 / 1024 )) MB)"
-          if [ "$CURRENT_SIZE" -lt "$PARTITION_SIZE" ]; then
-            PAD_SIZE=$(( PARTITION_SIZE - CURRENT_SIZE ))
-            echo "填充 $PAD_SIZE bytes ($(( PAD_SIZE / 1024 / 1024 )) MB) 到 $PARTITION_SIZE bytes (96 MB)"
-            dd if=/dev/zero bs=1 count="$PAD_SIZE" >> "$IMG" 2>/dev/null
-            echo "填充后大小: $(stat -c%s "$IMG") bytes"
-          else
-            echo "镜像已大于分区大小，跳过填充"
-          fi
-
       - name: 上传到 Release
         uses: softprops/action-gh-release@v2
         with:
