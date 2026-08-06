@@ -49,39 +49,14 @@ Thumbs.db
 *.swp
 *~
 
-# AOSP/TWRP source-built libraries - DO NOT include as prebuilts
-# These are built from source and including them causes "overriding commands" build errors
-recovery/root/system/lib64/libkeymaster*.so
-recovery/root/system/lib64/libkeystore*.so
-recovery/root/system/lib64/libkeyutils.so
-recovery/root/system/lib64/libsoftkeymasterdevice.so
-recovery/root/system/lib64/libsoft_attestation_cert.so
-recovery/root/system/lib64/librpmb.so
-recovery/root/system/lib64/libminuivivo.so
-recovery/root/system/lib64/librecovery_ui*.so
-recovery/root/vendor/lib64/libcld80211.so
-recovery/root/vendor/lib64/libkeystore*.so
-recovery/root/vendor/lib64/vendor.display.config@*.so
-recovery/root/vendor/lib64/vendor.qti.hardware.tui_comm@*.so
-recovery/root/vendor/lib64/vendor.qti.hardware.wifi.supplicant@*.so
-
 # AOSP/TWRP source-built binaries - DO NOT include as prebuilts
+# These are built from source by TWRP and including them causes "overriding commands" build errors
+# Use BUILD_BROKEN_DUP_RULES := true in BoardConfig.mk to handle conflicts
 recovery/root/system/bin/keystore
 recovery/root/system/bin/keystore_auth
-recovery/root/system/bin/wait_for_keymaster
 recovery/root/system/bin/logd
 recovery/root/system/bin/servicemanager
 recovery/root/system/bin/hwservicemanager
-recovery/root/system/bin/ashmemd
-recovery/root/system/bin/tombstoned
-recovery/root/system/bin/subsys
-recovery/root/system/bin/dhcpcd
-recovery/root/vendor/bin/hw/android.hardware.boot@*
-recovery/root/vendor/bin/hw/android.hardware.health@*
-recovery/root/vendor/bin/vndservicemanager
-
-# VINTF manifests - built from source by system/libvintf/
-recovery/root/vendor/etc/vintf/
 
 # Recovery fstab backup files
 recovery.fstab.bak
