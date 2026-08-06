@@ -118,6 +118,13 @@ TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := true
 
+# QCom standard FBE decryption build system
+# This triggers the entire QCom decryption chain:
+# - Builds qcom_decrypt and qcom_decrypt_fbe packages
+# - Copies prepdecrypt.sh and init.recovery.qcom_decrypt*.rc
+# - Auto-enables BOARD_USES_QCOM_DECRYPTION and TW_INCLUDE_RESETPROP
+BOARD_USES_QCOM_FBE_DECRYPTION := true
+
 # TWRP brightness control (from init.recovery.qcom.rc: brightness 200)
 TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
 TW_MAX_BRIGHTNESS := 255

@@ -1,8 +1,14 @@
 # vivo PD1936 recovery - loaded via import in init.recovery.qcom.rc
-# USB/ADB configuration only (properties and exec are in init.recovery.qcom.rc)
+# USB/ADB configuration and vivo-specific services
 
 on init
     setprop sys.usb.controller "a600000.dwc3"
     setprop sys.usb.configfs 1
     setprop persist.sys.usb.config "adb"
     setprop ro.adb.secure 0
+
+# vivo guardianangle security service (moved from init.recovery.platform.rc)
+service guardianangle /system/bin/guardianangle
+    disabled
+    user root
+    seclabel u:r:recovery:s0

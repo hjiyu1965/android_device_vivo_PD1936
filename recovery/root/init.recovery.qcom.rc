@@ -29,7 +29,7 @@
 import /init.recovery.vivo.rc
 import /init.recovery.touch.rc
 import /init.recovery.svc.rc
-import /init.recovery.platform.rc
+import /init.recovery.qcom_decrypt.rc
 
 on early-init
     # Critical properties for vts_app_recovery touchscreen firmware matching
@@ -57,6 +57,8 @@ on init
     setprop sys.usb.controller "a600000.dwc3"
     setprop persist.sys.usb.config "adb"
     setprop ro.adb.secure 0
+    # QCom decryption debug - enables prepdecrypt.sh verbose logging
+    setprop prepdecrypt.loglevel 2
 
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}

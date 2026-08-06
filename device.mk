@@ -7,10 +7,20 @@
 
 LOCAL_PATH := device/vivo/PD1936
 
+# QCom standard FBE decryption packages
+# These are phony packages from device/qcom/twrp-common/ that handle:
+# - prepdecrypt.sh (security patch level alignment)
+# - init.recovery.qcom_decrypt.rc (decryption service chain)
+# - init.recovery.qcom_decrypt.fbe.rc (FBE-specific services)
+# - resetprop binary (for setting read-only properties)
+PRODUCT_PACKAGES += \
+    qcom_decrypt \
+    qcom_decrypt_fbe
+
 # Init scripts and configuration files
+# NOTE: init.recovery.platform.rc removed - replaced by qcom_decrypt standard chain
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery.fstab:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/etc/recovery.fstab \
-    $(LOCAL_PATH)/recovery/root/init.recovery.platform.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.platform.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.qcom.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.qcom.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.svc.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.svc.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.touch.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.touch.rc \
@@ -27,15 +37,15 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/bin/vivotool:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivotool \
     $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery
 
-# FBE decryption chain - vendor/bin HAL services (from stock recovery.img)
+# FBE decryption chain - HAL services moved to system/bin
+# TWRP QCom standard decryption rc files reference /system/bin/ paths
 # NOTE: wait_for_keymaster, keystore, keystore_auth, logd, servicemanager,
 #       hwservicemanager, ashmemd, tombstoned, android.hardware.boot@1.0-service,
 #       android.hardware.health@2.0-service are built from source by AOSP.
-#       Only truly proprietary HAL services are prebuilts.
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/vendor/bin/qseecomd:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/qseecomd \
-    $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.keymaster@4.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.keymaster@4.0-service-qti \
-    $(LOCAL_PATH)/recovery/root/vendor/bin/android.hardware.gatekeeper@1.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/android.hardware.gatekeeper@1.0-service-qti
+    $(LOCAL_PATH)/recovery/root/system/bin/qseecomd:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/qseecomd \
+    $(LOCAL_PATH)/recovery/root/system/bin/android.hardware.keymaster@4.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/android.hardware.keymaster@4.0-service-qti \
+    $(LOCAL_PATH)/recovery/root/system/bin/android.hardware.gatekeeper@1.0-service-qti:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/android.hardware.gatekeeper@1.0-service-qti
 
 # vivo proprietary libraries (NOT built from source by AOSP/TWRP)
 PRODUCT_COPY_FILES += \
