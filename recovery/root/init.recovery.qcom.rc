@@ -29,7 +29,7 @@
 import /init.recovery.vivo.rc
 import /init.recovery.touch.rc
 import /init.recovery.svc.rc
-import /init.recovery.qcom_decrypt.rc
+import /init.recovery.platform.rc
 
 on early-init
     # Critical properties for vts_app_recovery touchscreen firmware matching

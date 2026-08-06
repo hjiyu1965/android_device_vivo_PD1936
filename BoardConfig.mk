@@ -118,12 +118,12 @@ TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := true
 
-# QCom standard FBE decryption build system
-# This triggers the entire QCom decryption chain:
-# - Builds qcom_decrypt and qcom_decrypt_fbe packages
-# - Copies prepdecrypt.sh and init.recovery.qcom_decrypt*.rc
-# - Auto-enables BOARD_USES_QCOM_DECRYPTION and TW_INCLUDE_RESETPROP
-BOARD_USES_QCOM_FBE_DECRYPTION := true
+# FBE decryption: use vivo's original decryption trigger mechanism
+# vivo's qseecomd doesn't set sys.listeners.registered, so TWRP's standard
+# qcom_decrypt chain doesn't work. Using vivo's original init.recovery.platform.rc
+# with early-boot and recovery.service triggers instead.
+# prepdecrypt.sh is manually included for security patch level alignment.
+TW_INCLUDE_RESETPROP := true
 
 # TWRP brightness control (from init.recovery.qcom.rc: brightness 200)
 TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
