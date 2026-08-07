@@ -1,29 +1,16 @@
-on early-boot
-    start qseecomd
-    start cryptfshw-1-0
+# init.recovery.platform.rc - vivo PD1936
+# Crypto service definitions for FBE decryption
+# Only services with existing binaries are defined here.
 
-# just boot in fastboot mode, fastbootd service need vendor.boot-hal-1-0 & health-hal-2-0
-on property:recovery.fastboot_mode=1
-    start vendor.boot-hal-1-0
-    start health-hal-2-0
-
+# Trigger crypto services when TWRP requests them
 on property:recovery.service=1
+    start qseecomd
     start keymaster-4-0
     start gatekeeper-1-0
-    # Use non-blocking start instead of exec_start to prevent init hang
     start wait_for_keymaster
     start guardianangle
-    setprop recovery.state.services.ready 1
 
-on property:vts_app_recovery.status=run
-    start vts_app_recovery
-    setprop vts_app_recovery.status running
-
-service wait_for_keymaster  /system/bin/wait_for_keymaster
-    disabled
-    user root
-    seclabel u:r:recovery:s0
-
+# qseecomd - Qualcomm Secure Execution Environment daemon
 service qseecomd /vendor/bin/qseecomd
     disabled
     user root
@@ -31,13 +18,7 @@ service qseecomd /vendor/bin/qseecomd
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
-service keymaster-3-0 /vendor/bin/android.hardware.keymaster@3.0-service-qti
-    disabled
-    user root
-    group root drmrpc
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
-    seclabel u:r:recovery:s0
-
+# Keymaster 4.0 HAL service
 service keymaster-4-0 /vendor/bin/android.hardware.keymaster@4.0-service-qti
     disabled
     user root
@@ -45,6 +26,7 @@ service keymaster-4-0 /vendor/bin/android.hardware.keymaster@4.0-service-qti
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
+# Gatekeeper 1.0 HAL service
 service gatekeeper-1-0 /vendor/bin/android.hardware.gatekeeper@1.0-service-qti
     disabled
     user root
@@ -52,45 +34,22 @@ service gatekeeper-1-0 /vendor/bin/android.hardware.gatekeeper@1.0-service-qti
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
-service cryptfshw-1-0 /vendor/bin/vendor.qti.hardware.cryptfshw@1.0-service-qti
+# wait_for_keymaster - waits for keymaster service to be ready
+service wait_for_keymaster /system/bin/wait_for_keymaster
     disabled
     user root
-    group root
-    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
-service keystore_auth /system/bin/keystore_auth
+# guardianangle - vivo security service
+service guardianangle /system/bin/guardianangle
+    disabled
+    user root
+    seclabel u:r:recovery:s0
+
+# vts_app_recovery - vivo touchscreen firmware update
+service vts_app_recovery /system/bin/vts_app_recovery --update
     disabled
     user system
-    group root system
-    seclabel u:r:recovery:s0
-
-service keystore /system/bin/keystore /data/misc/keystore
-    disabled
-    user keystore
-    group keystore drmrpc readproc log
-    writepid /dev/cpuset/foreground/tasks
-    seclabel u:r:recovery:s0
-
-service guardianangle  /system/bin/guardianangle
-    disabled
-    user root
-    seclabel u:r:recovery:s0
-
-service vendor.boot-hal-1-0 /vendor/bin/hw/android.hardware.boot@1.0-service
-    disabled
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
-service health-hal-2-0 /vendor/bin/hw/android.hardware.health@2.0-service
-    disabled
-    user root
-    group root
-    seclabel u:r:recovery:s0
-
-service vts_app_recovery /system/bin/vts_app_recovery  --update
-    user system
-    disabled
+    group system
     seclabel u:r:recovery:s0
     oneshot

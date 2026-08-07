@@ -1,3 +1,8 @@
+# init.recovery.touch.rc - vivo PD1936
+# Touchscreen permissions and firmware update trigger
+# NOTE: The touchupdate service is defined in init.recovery.platform.rc
+# as vts_app_recovery to avoid duplicate service definitions.
+
 on boot
 	chown system /proc/NVTSPI
 	chmod 0666 /proc/NVTSPI
@@ -153,11 +158,6 @@ on boot
 	chown system /sys/class/vts/vivo_ts_second/status/proximity
 	chown system /sys/class/vts/vivo_ts_second/status/rotation
 	chown system /sys/class/vts/vivo_ts_second/status/virt_prox_enable
-	start touchupdate
 
-service touchupdate /system/bin/vts_app_recovery --update
-	class core
-	user system
-	disabled
-	seclabel u:r:vts_app:s0
-	oneshot
+	# Start touchscreen firmware update (non-blocking)
+	start vts_app_recovery
