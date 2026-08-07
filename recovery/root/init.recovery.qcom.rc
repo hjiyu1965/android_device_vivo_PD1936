@@ -14,9 +14,9 @@
 #
 # THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 # AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-# AND NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER
-# OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+# IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NON-INFRINGEMENT ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
 # EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
 # PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
 # OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
@@ -30,9 +30,6 @@ import /init.recovery.vivo.rc
 import /init.recovery.touch.rc
 import /init.recovery.svc.rc
 import /init.recovery.platform.rc
-# Import TWRP standard Qualcomm FBE decryption chain
-import /init.recovery.qcom_decrypt.rc
-import /init.recovery.qcom_decrypt.fbe.rc
 
 on early-init
     # Critical properties for vts_app_recovery touchscreen firmware matching
@@ -63,19 +60,24 @@ on init
 
 on property:ro.boot.usbcontroller=*
     setprop sys.usb.controller ${ro.boot.usbcontroller}
+    #write /sys/class/udc/${ro.boot.usbcontroller}/device/../mode peripheral
 
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
 
 on post-fs-data
-    # Start touchscreen firmware update (non-blocking service)
+    # Trigger crypto services for FBE decryption (non-blocking)
+    # This starts qseecomd, keymaster-4-0, gatekeeper-1-0, wait_for_keymaster
+    setprop recovery.service 1
+    # Start touchscreen firmware update (non-blocking service, NOT exec)
+    # exec would block init if vts_app_recovery hangs, preventing TWRP UI from starting
     start touchupdate
 
 on boot
-    # Start vivo GuardianAngle service (non-blocking)
-    start guardianangle
-    # Start touchscreen firmware update as backup (non-blocking)
+    # Ensure crypto services are started (non-blocking)
+    setprop recovery.service 1
+    # Backup trigger for touchscreen firmware update (non-blocking)
     start touchupdate
 
 service touchupdate /system/bin/vts_app_recovery --update
