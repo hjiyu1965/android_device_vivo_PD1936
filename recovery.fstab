@@ -12,9 +12,9 @@
 # Metadata (needed for FBE key storage - MUST mount before /data)
 /metadata        ext4              /dev/block/bootdevice/by-name/metadata                     flags=display=Metadata;wait;check
 
-# Data (FBE + ICE encryption, F2FS filesystem)
+# Data (FBE encryption, F2FS filesystem)
 # latemount is REQUIRED for FBE - TWRP mounts this after crypto services are ready
-/data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=Data;latemount;wait;check;encryptable=/data;fileencryption=ice,wrappedkey;length=-16384
+/data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=Data;latemount;wait;check;encryptable=/data;fileencryption=ice
 
 # Cache
 /cache           ext4              /dev/block/bootdevice/by-name/cache                        flags=display=Cache;wait
@@ -47,6 +47,3 @@
 
 # USB OTG
 /usbotg          vfat              /devices/platform/soc/*.ssusb/*.dwc3/xhci-hcd.*.auto*      flags=display=USB_OTG;storage;removable;fsflags=utf8
-
-# RAM disk
-/ramdisk         ramdisk           ramdisk                                                    flags=display=Ramdisk
