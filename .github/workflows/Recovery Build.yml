@@ -4,41 +4,35 @@ on:
   workflow_dispatch:
     inputs:
       MANIFEST_URL:
-        description: 'TWRP 源码 manifest 仓库地址'
+        description: 'TWRP manifest URL'
         required: true
         default: 'https://github.com/minimal-manifest-twrp/platform_manifest_twrp_aosp'
       MANIFEST_BRANCH:
-        description: 'TWRP 源码分支 (twrp-11 对应 Android 11)'
+        description: 'TWRP branch (twrp-11 for Android 11)'
         required: true
         default: 'twrp-11'
       DEVICE_TREE_URL:
-        description: '设备树仓库地址'
+        description: 'Device tree repo URL'
         required: true
         default: 'https://github.com/hjiyu1965/android_device_vivo_PD1936'
       DEVICE_TREE_BRANCH:
-        description: '设备树分支'
+        description: 'Device tree branch'
         required: true
         default: 'twrp-11'
       DEVICE_PATH:
-        description: '设备树在源码中的路径'
+        description: 'Device tree path in source'
         required: true
         default: 'device/vivo/PD1936'
-      COMMON_TREE_URL:
-        description: '公共设备树地址 (无则留空)'
-        required: false
-      COMMON_PATH:
-        description: '公共设备树路径 (无则留空)'
-        required: false
       DEVICE_NAME:
-        description: '设备代号'
+        description: 'Device codename'
         required: true
         default: 'PD1936'
       MAKEFILE_NAME:
-        description: '编译 makefile 名称 (twrp_PD1936 或 omni_PD1936)'
+        description: 'Makefile name (twrp_PD1936)'
         required: true
         default: 'twrp_PD1936'
       BUILD_TARGET:
-        description: '编译目标 (recovery 或 boot)'
+        description: 'Build target (recovery or boot)'
         required: true
         default: 'recovery'
 
@@ -50,9 +44,9 @@ jobs:
       contents: write
 
     steps:
-      - name: 显示编译参数
+      - name: Show build parameters
         run: |
-          echo "::group::编译环境变量"
+          echo "::group::Build Environment"
           echo "Manifest URL: ${{ github.event.inputs.MANIFEST_URL }}"
           echo "Manifest Branch: ${{ github.event.inputs.MANIFEST_BRANCH }}"
           echo "Device Tree URL: ${{ github.event.inputs.DEVICE_TREE_URL }}"
@@ -63,13 +57,13 @@ jobs:
           echo "Build Target: ${{ github.event.inputs.BUILD_TARGET }}.img"
           echo "::endgroup::"
 
-      - name: 检出代码
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 清理工作空间
+      - name: Clean workspace
         uses: rokibhasansagar/slimhub_actions@main
 
-      - name: 准备编译环境
+      - name: Prepare build environment
         run: |
           sudo apt update
           DEBIAN_FRONTEND=noninteractive sudo apt install -yq \
@@ -79,20 +73,20 @@ jobs:
               build-essential libgtk-3-dev libglu1-mesa-dev freeglut3-dev git libxml2 lzop pngcrush schedtool squashfs-tools \
               imagemagick libbz2-dev lzma ncftp qemu-user-static libstdc++-10-dev libncurses6 python3 tar
 
-      - name: 安装 OpenJDK 11
+      - name: Install OpenJDK 11
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '11'
 
-      - name: 安装 repo 工具
+      - name: Install repo tool
         run: |
           mkdir ~/bin
           curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
           chmod a+x ~/bin/repo
           sudo ln -sf ~/bin/repo /usr/bin/repo
 
-      - name: 初始化 repo
+      - name: Initialize repo
         id: pwd
         run: |
           mkdir workspace
@@ -102,36 +96,20 @@ jobs:
           git config --global user.email "hjiyu1965@users.noreply.github.com"
           repo init --depth=1 -u ${{ github.event.inputs.MANIFEST_URL }} -b ${{ github.event.inputs.MANIFEST_BRANCH }}
 
-      - name: 同步源码
+      - name: Sync source
         run: |
           repo sync -j$(nproc --all) --force-sync
         working-directory: workspace
 
-      - name: 克隆设备树
+      - name: Clone device tree
         run: |
           git clone ${{ github.event.inputs.DEVICE_TREE_URL }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ./${{ github.event.inputs.DEVICE_PATH }}
         working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
-      - name: 克隆公共设备树
-        if: |
-          github.event.inputs.COMMON_TREE_URL != null
-          && github.event.inputs.COMMON_PATH != null
+      - name: Sync device dependencies
         run: |
-          git clone ${{ github.event.inputs.COMMON_TREE_URL }} -b ${{ github.event.inputs.DEVICE_TREE_BRANCH }} ./${{ github.event.inputs.COMMON_PATH }}
-        working-directory: ${{ steps.pwd.outputs.workspace-folder }}
-
-      - name: 判断编译树类型
-        uses: haya14busa/action-cond@v1
-        id: buildtree
-        with:
-          cond: ${{ github.event.inputs.MANIFEST_BRANCH == 'twrp-11' || github.event.inputs.MANIFEST_BRANCH == 'twrp-12.1' }}
-          if_true: twrp
-          if_false: omni
-
-      - name: 同步设备依赖
-        run: |
-          if [ -f ${{ github.event.inputs.DEVICE_PATH }}/${{ steps.buildtree.outputs.value }}.dependencies ]; then
-            bash ${GITHUB_WORKSPACE}/scripts/convert.sh ${{ github.event.inputs.DEVICE_PATH }}/${{ steps.buildtree.outputs.value }}.dependencies
+          if [ -f ${{ github.event.inputs.DEVICE_PATH }}/twrp.dependencies ]; then
+            bash ${GITHUB_WORKSPACE}/scripts/convert.sh ${{ github.event.inputs.DEVICE_PATH }}/twrp.dependencies
             repo sync -j$(nproc --all) || true
           else
             echo "No dependencies file found, skipping"
@@ -139,45 +117,44 @@ jobs:
         working-directory: ${{ steps.pwd.outputs.workspace-folder }}
         continue-on-error: true
 
-      - name: 设置 Swap 空间
+      - name: Set up swap space
         uses: pierotofy/set-swap-space@master
         with:
           swap-size-gb: 12
 
-      - name: 编译 recovery
+      - name: Build recovery
         run: |
           source build/envsetup.sh
           export ALLOW_MISSING_DEPENDENCIES=true
           lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
         working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
-      - name: 上传到 Release
+      - name: Upload to Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/${{ github.event.inputs.BUILD_TARGET }}.img
             workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*.zip
-            workspace/out/target/product/${{ github.event.inputs.DEVICE_NAME }}/*vendor*.img
           name: ${{ github.event.inputs.DEVICE_NAME }}_${{ github.event.inputs.MANIFEST_BRANCH }}_${{ github.run_id }}
           tag_name: ${{ github.run_id }}
           body: |
             ## vivo PD1936 (V1936A) TWRP Recovery
 
-            **编译信息:**
+            **Build info:**
             - Manifest: ${{ github.event.inputs.MANIFEST_BRANCH }}
-            - 设备: ${{ github.event.inputs.DEVICE_NAME }}
-            - 目标: ${{ github.event.inputs.BUILD_TARGET }}.img
+            - Device: ${{ github.event.inputs.DEVICE_NAME }}
+            - Target: ${{ github.event.inputs.BUILD_TARGET }}.img
 
-            **设备特性:**
-            - FBE (File-Based Encryption) 解密支持
+            **Features:**
+            - FBE (File-Based Encryption) decryption support
             - Qualcomm QSEE / Keymaster 4.0 / Gatekeeper 1.0
-            - vivo 专有解密链 (vivofbe, libvivofscrypt)
-            - 非 A/B 分区方案
+            - vivo proprietary decryption chain (vivofbe, libvivofscrypt)
+            - Non-A/B partition scheme
             - F2FS userdata
 
-            **使用方法:**
-            1. 下载 recovery.img
-            2. 使用 fastboot flash recovery recovery.img 刷入
-            3. 重启进入 recovery 模式
+            **Usage:**
+            1. Download recovery.img
+            2. Flash with: fastboot flash recovery recovery.img
+            3. Reboot to recovery mode
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

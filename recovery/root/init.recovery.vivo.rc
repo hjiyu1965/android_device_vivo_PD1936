@@ -1,8 +1,0 @@
-# vivo PD1936 recovery - loaded via import in init.recovery.qcom.rc
-# USB/ADB configuration only (properties and exec are in init.recovery.qcom.rc)
-
-on init
-    setprop sys.usb.controller "a600000.dwc3"
-    setprop sys.usb.configfs 1
-    setprop persist.sys.usb.config "adb"
-    setprop ro.adb.secure 0

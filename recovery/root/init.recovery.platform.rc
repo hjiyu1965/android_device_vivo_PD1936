@@ -1,5 +1,6 @@
 on early-boot
     start qseecomd
+    start cryptfshw-1-0
 
 # just boot in fastboot mode, fastbootd service need vendor.boot-hal-1-0 & health-hal-2-0
 on property:recovery.fastboot_mode=1
@@ -10,13 +11,12 @@ on property:recovery.service=1
     start keymaster-4-0
     start gatekeeper-1-0
     # Use non-blocking start instead of exec_start to prevent init hang
-    # exec_start would block init if wait_for_keymaster hangs (e.g. keymaster HAL not ready)
     start wait_for_keymaster
     start guardianangle
     setprop recovery.state.services.ready 1
 
 on property:vts_app_recovery.status=run
-    start touchupdate
+    start vts_app_recovery
     setprop vts_app_recovery.status running
 
 service wait_for_keymaster  /system/bin/wait_for_keymaster
@@ -52,6 +52,13 @@ service gatekeeper-1-0 /vendor/bin/android.hardware.gatekeeper@1.0-service-qti
     setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
     seclabel u:r:recovery:s0
 
+service cryptfshw-1-0 /vendor/bin/vendor.qti.hardware.cryptfshw@1.0-service-qti
+    disabled
+    user root
+    group root
+    setenv LD_LIBRARY_PATH /vendor/lib64:/vendor/lib:/system/lib64:/system/lib:/sbin
+    seclabel u:r:recovery:s0
+
 service keystore_auth /system/bin/keystore_auth
     disabled
     user system
@@ -81,3 +88,9 @@ service health-hal-2-0 /vendor/bin/hw/android.hardware.health@2.0-service
     user root
     group root
     seclabel u:r:recovery:s0
+
+service vts_app_recovery /system/bin/vts_app_recovery  --update
+    user system
+    disabled
+    seclabel u:r:recovery:s0
+    oneshot

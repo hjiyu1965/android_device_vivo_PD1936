@@ -46,10 +46,6 @@ BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --tags_offset $(BOARD_KERNEL_TAGS_OFFSET)
 BOARD_KERNEL_IMAGE_NAME := Image
-BOARD_INCLUDE_DTB_IN_BOOTIMG := true
-BOARD_KERNEL_SEPARATED_DTBO := true
-TARGET_KERNEL_CONFIG := PD1936_defconfig
-TARGET_KERNEL_SOURCE := kernel/vivo/PD1936
 
 # Kernel - prebuilt
 TARGET_FORCE_PREBUILT_KERNEL := true
@@ -60,6 +56,7 @@ BOARD_MKBOOTIMG_ARGS += --dtb $(TARGET_PREBUILT_DTB)
 BOARD_INCLUDE_DTB_IN_BOOTIMG :=
 BOARD_PREBUILT_DTBOIMAGE := $(DEVICE_PATH)/prebuilt/dtbo.img
 BOARD_KERNEL_SEPARATED_DTBO :=
+BOARD_INCLUDE_RECOVERY_DTBO :=
 endif
 
 # Partitions
@@ -77,19 +74,11 @@ TARGET_COPY_OUT_VENDOR := vendor
 TARGET_BOARD_PLATFORM := msmnile
 
 # Recovery
-# BOARD_INCLUDE_RECOVERY_DTBO only when building kernel from source
-# When using prebuilt kernel, DTBO is handled via BOARD_PREBUILT_DTBOIMAGE
-ifneq ($(TARGET_FORCE_PREBUILT_KERNEL),true)
-BOARD_INCLUDE_RECOVERY_DTBO := true
-endif
 TARGET_RECOVERY_PIXEL_FORMAT := RGBX_8888
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 
-# Security patch level
-VENDOR_SECURITY_PATCH := 2021-08-01
-
-# Verified Boot - disable AVB for TWRP recovery to avoid "Unhandled flag: 'avb'"
+# Verified Boot - disable AVB for TWRP
 BOARD_AVB_ENABLE := false
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 
@@ -104,22 +93,18 @@ TW_EXTRA_LANGUAGES := true
 TW_SCREEN_BLANK_ON_BOOT := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
 TW_USE_TOOLBOX := true
-# Disable MTP to prevent it from blocking ADB
 TW_EXCLUDE_MTP := true
+TW_DEFAULT_LANGUAGE := zh-CN
+TW_HAS_DOWNLOAD_MODE := true
 
-# FBE / Crypto - vivo PD1936 uses FBE with ICE hardware encryption
+# FBE / Crypto
 TW_INCLUDE_CRYPTO := true
 TW_INCLUDE_CRYPTO_FBE := true
-
-# Qualcomm crypto hardware support
-TARGET_CRYPTFS_HW_VERSION := qcom
-
-# FBE decryption: use ICE (Inline Crypto Engine) for hardware encryption
-# vivo PD1936 uses ICE + wrappedkey for FBE
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 TW_USE_FSCRYPT_POLICY := true
+TARGET_CRYPTFS_HW_VERSION := qcom
 
-# TWRP brightness control (from init.recovery.qcom.rc: brightness 200)
+# TWRP brightness
 TW_BRIGHTNESS_PATH := /sys/class/backlight/panel0-backlight/brightness
 TW_MAX_BRIGHTNESS := 255
 TW_DEFAULT_BRIGHTNESS := 200
@@ -137,9 +122,3 @@ TW_INCLUDE_FUSE_EXFAT := true
 # TWRP debug
 TARGET_USES_LOGD := true
 TWRP_INCLUDE_LOGCAT := true
-
-# TWRP device specific
-TW_DEFAULT_LANGUAGE := zh-CN
-
-# Qualcomm device - add download mode for proper reboot handling
-TW_HAS_DOWNLOAD_MODE := true

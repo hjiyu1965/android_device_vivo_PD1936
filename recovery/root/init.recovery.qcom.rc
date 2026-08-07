@@ -8,7 +8,7 @@
 #       notice, this list of conditions and the following disclaimer in the
 #       documentation and/or other materials provided with the distribution.
 #     * Neither the name of The Linux Foundation nor
-#       the names of its contributors may be used to endorse or promote
+#       the names of its contributors may be endorse or promote
 #       products derived from this software without specific prior written
 #       permission.
 #
@@ -25,31 +25,11 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-# Import additional vivo recovery scripts
-import /init.recovery.vivo.rc
-import /init.recovery.touch.rc
-import /init.recovery.svc.rc
+# Import additional recovery scripts
 import /init.recovery.platform.rc
-
-on early-init
-    # Critical properties for vts_app_recovery touchscreen firmware matching
-    # These MUST be set before vts_app_recovery runs
-    setprop ro.build.oem.projects "PD1936 PD1936B PD1936C PD1936D PD1936E PD1936G"
-    setprop ro.vivo.product.release.name "PD1936"
-    setprop ro.vivo.product.model "PD1936"
-    setprop ro.product.model "V1936AL"
-    setprop ro.product.board "msmnile"
-    setprop ro.board.platform "msmnile"
-    setprop ro.vivo.product.platform "SM8150"
-    setprop ro.vivo.product.solution "QCOM"
-    setprop ro.vivo.hardware.version "PD1936MA"
-    setprop ro.board.bbk "MA"
-    setprop ro.vivo.board.version "MA"
-    setprop ro.build.expect.hardware "PD1936MA"
-    setprop ro.vivo.product.series "IQOO"
-    setprop ro.vivo.oem.support "yes"
-    # FBE decryption: gatekeeper SPU disable (from stock prop.default)
-    setprop vendor.gatekeeper.disable_spu true
+import /init.recovery.svc.rc
+import /init.recovery.touch.rc
+import /init.recovery.wifi.rc
 
 on init
     write /sys/class/backlight/panel0-backlight/brightness 200
@@ -68,21 +48,8 @@ on fs
 
 on post-fs-data
     # Trigger crypto services for FBE decryption (non-blocking)
-    # This starts qseecomd, keymaster-4-0, gatekeeper-1-0, wait_for_keymaster
     setprop recovery.service 1
-    # Start touchscreen firmware update (non-blocking service, NOT exec)
-    # exec would block init if vts_app_recovery hangs, preventing TWRP UI from starting
-    start touchupdate
 
 on boot
     # Ensure crypto services are started (non-blocking)
     setprop recovery.service 1
-    # Backup trigger for touchscreen firmware update (non-blocking)
-    start touchupdate
-
-service touchupdate /system/bin/vts_app_recovery --update
-    class core
-    user root
-    group root system
-    seclabel u:r:recovery:s0
-    oneshot
