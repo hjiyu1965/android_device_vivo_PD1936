@@ -17,14 +17,14 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/ueventd.qcom.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/ueventd.qcom.rc
 
 # vivo proprietary binaries
+# NOTE: wait_for_keymaster is built from source by AOSP/TWRP, do NOT copy as prebuilt
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/bin/aria2c:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/aria2c \
     $(LOCAL_PATH)/recovery/root/system/bin/guardianangle:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/guardianangle \
     $(LOCAL_PATH)/recovery/root/system/bin/little_buddy:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/little_buddy \
     $(LOCAL_PATH)/recovery/root/system/bin/vivofbe:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivofbe \
     $(LOCAL_PATH)/recovery/root/system/bin/vivotool:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vivotool \
-    $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery \
-    $(LOCAL_PATH)/recovery/root/system/bin/wait_for_keymaster:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/wait_for_keymaster
+    $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/bin/vts_app_recovery
 
 # FBE decryption chain - vendor/bin HAL services
 PRODUCT_COPY_FILES += \
