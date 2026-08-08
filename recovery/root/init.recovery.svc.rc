@@ -2,16 +2,15 @@
 # Minimal service configuration for TWRP
 # NOTE: Do NOT define servicemanager, hwservicemanager, vndservicemanager,
 # logd, or tombstoned here - TWRP provides these as built-in services.
-# Defining them again causes init conflicts and prevents TWRP from booting.
 
-on early-init
-    mkdir /vendor/firmware_mnt
-    symlink /vendor/firmware_mnt /firmware
+on init
     mkdir /mnt/vendor
     mkdir /mnt/vendor/persist
     chown root system /mnt/vendor/persist
     chmod 0771 /mnt/vendor/persist
     symlink /mnt/vendor/persist /persist
+    mkdir /vendor/firmware_mnt
+    symlink /vendor/firmware_mnt /firmware
 
 # vivo LED indicator service
 service flash_light /system/bin/little_buddy --light_tips
