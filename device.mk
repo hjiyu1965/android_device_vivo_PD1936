@@ -117,8 +117,5 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so
 
-# === ADDED: vendor/bin supplementary services (fastbootd, etc.) ===
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/vendor/bin/hw/android.hardware.boot@1.0-service:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/hw/android.hardware.boot@1.0-service \
-    $(LOCAL_PATH)/recovery/root/vendor/bin/hw/android.hardware.health@2.0-service:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/hw/android.hardware.health@2.0-service \
-    $(LOCAL_PATH)/recovery/root/vendor/bin/vndservicemanager:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/vndservicemanager
+# === NOTE: vndservicemanager, boot-hal, health-hal are built from AOSP source ===
+# Do NOT copy them as prebuilts.
