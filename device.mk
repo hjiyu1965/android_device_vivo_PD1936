@@ -109,13 +109,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=adb \
     ro.adb.secure=0
 
-# === ADDED: vivo-specific system/lib64 libraries (AOSP builds the rest from source) ===
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so
-
-# === ADDED: QCOM TUI communication library (REQUIRED for keymaster/qseecomd FBE chain) ===
+# FBE decryption - QCOM TUI communication library (NOT built by AOSP)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so
-
-# === NOTE: vndservicemanager, boot-hal, health-hal are built from AOSP source ===
-# Do NOT copy them as prebuilts.
