@@ -113,23 +113,11 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so
 
-# === ADDED: supplementary vendor/lib64 libraries (extracted from stock ramdisk) ===
+# === ADDED: QCOM TUI communication library (REQUIRED for keymaster/qseecomd FBE chain) ===
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.display.config@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.display.config@1.0.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeystore-engine-wifi-hidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libkeystore-engine-wifi-hidl.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeystore-wifi-hidl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libkeystore-wifi-hidl.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/libcld80211.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libcld80211.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.0.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.1.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.1.so
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so
 
-# === ADDED: init.recovery.wifi.rc (WiFi support) ===
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/init.recovery.wifi.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.wifi.rc
-
-# === ADDED: vendor/bin supplementary services (WiFi, fastbootd, etc.) ===
+# === ADDED: vendor/bin supplementary services (fastbootd, etc.) ===
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/vendor/bin/hw/android.hardware.boot@1.0-service:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/hw/android.hardware.boot@1.0-service \
     $(LOCAL_PATH)/recovery/root/vendor/bin/hw/android.hardware.health@2.0-service:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/bin/hw/android.hardware.health@2.0-service \
