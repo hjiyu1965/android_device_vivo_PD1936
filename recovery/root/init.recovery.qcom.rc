@@ -29,7 +29,6 @@
 import /init.recovery.platform.rc
 import /init.recovery.svc.rc
 import /init.recovery.touch.rc
-import /init.recovery.wifi.rc
 
 on init
     write /sys/class/backlight/panel0-backlight/brightness 200
