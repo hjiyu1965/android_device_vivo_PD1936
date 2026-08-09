@@ -109,57 +109,12 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=adb \
     ro.adb.secure=0
 
-# === ADDED: 32-bit system libraries (required by vendor binaries via LD_LIBRARY_PATH) ===
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/system/lib/libc.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib/libc.so \
-    $(LOCAL_PATH)/recovery/root/system/lib/libcutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib/libcutils.so \
-    $(LOCAL_PATH)/recovery/root/system/lib/libdl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib/libdl.so \
-    $(LOCAL_PATH)/recovery/root/system/lib/libm.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib/libm.so \
-    $(LOCAL_PATH)/recovery/root/system/lib/libstdc++.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib/libstdc++.so \
-    $(LOCAL_PATH)/recovery/root/system/lib/libz.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib/libz.so
-
-# === ADDED: supplementary system/lib64 libraries ===
+# === ADDED: vivo/QCOM specific system/lib64 libraries ===
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libion.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libion.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libadb_protos.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libadb_protos.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libbase.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libbase.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/liblog.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/liblog.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libc++.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libc++.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libcrypto.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libcrypto.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libselinux.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libselinux.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libhardware.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libhardware.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libvintf.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libvintf.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libfs_mgr.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libfs_mgr.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/liblp.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/liblp.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libbinder.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libbinder.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libhidlbase.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libhidlbase.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libhwbinder.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libhwbinder.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libutils.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libjsoncpp.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libjsoncpp.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libcutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libcutils.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libbacktrace.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libbacktrace.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libunwindstack.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libunwindstack.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/liblzma.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/liblzma.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libprocessgroup.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libprocessgroup.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libziparchive.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libziparchive.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libext2fs.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libext2fs.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libext2_blkid.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libext2_blkid.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libext2_com_err.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libext2_com_err.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libext2_e2p.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libext2_e2p.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libext2_misc.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libext2_misc.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libext2_quota.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libext2_quota.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libext2_uuid.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libext2_uuid.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libext4_utils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libext4_utils.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libf2fs_sparseblock.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libf2fs_sparseblock.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libfec.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libfec.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libft2.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libft2.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libpng.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libpng.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libm.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libm.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libz.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libz.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libdl.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libdl.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libc.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libc.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libsparse.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libsparse.so
+    $(LOCAL_PATH)/recovery/root/system/lib64/libhidltransport.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libhidltransport.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymaster4_1support.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymaster4_1support.so
 
 # === ADDED: supplementary vendor/lib64 libraries (extracted from stock ramdisk) ===
 PRODUCT_COPY_FILES += \
