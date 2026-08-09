@@ -109,12 +109,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=adb \
     ro.adb.secure=0
 
-# === ADDED: vivo/QCOM specific system/lib64 libraries ===
+# === ADDED: vivo-specific system/lib64 libraries (AOSP builds the rest from source) ===
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libion.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libion.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libhidltransport.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libhidltransport.so \
-    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymaster4_1support.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymaster4_1support.so
+    $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so
 
 # === ADDED: supplementary vendor/lib64 libraries (extracted from stock ramdisk) ===
 PRODUCT_COPY_FILES += \
