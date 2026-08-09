@@ -1,0 +1,96 @@
+# Proprietary blobs list for vivo PD1936 (V1936A)
+# Generated from stock recovery ramdisk
+#
+# Usage: ./extract-files.sh [adb|path_to_dumped_system]
+
+# System binaries
+system/bin/aria2c
+system/bin/guardianangle
+system/bin/little_buddy
+system/bin/vivofbe
+system/bin/vivotool
+system/bin/vts_app_recovery
+system/bin/wait_for_keymaster
+
+# System libraries - 64-bit
+system/lib64/libGuardianAngleClient.so
+system/lib64/libGuardianAngleService.so
+system/lib64/libGuardianAngleServiceImpl.so
+system/lib64/libbigdata_utils.so
+system/lib64/libvivofscrypt.so
+system/lib64/libvivogatekeeper.so
+system/lib64/libwifikeystorehalext.so
+system/lib64/libqcbor.so
+system/lib64/libqtikeymaster4.so
+system/lib64/libminuivivo.so
+system/lib64/libion.so
+
+# System libraries - 32-bit
+system/lib/libc.so
+system/lib/libcutils.so
+system/lib/libdl.so
+system/lib/libm.so
+system/lib/libstdc++.so
+system/lib/libz.so
+
+# Vendor binaries - FBE decryption chain
+vendor/bin/qseecomd
+vendor/bin/android.hardware.keymaster@4.0-service-qti
+vendor/bin/android.hardware.gatekeeper@1.0-service-qti
+
+# Vendor binaries - supplementary
+vendor/bin/hw/android.hardware.boot@1.0-service
+vendor/bin/hw/android.hardware.health@2.0-service
+vendor/bin/vndservicemanager
+
+# Vendor libraries - 64-bit
+vendor/lib64/hw/android.hardware.gatekeeper@1.0-impl-qti.so
+vendor/lib64/libGPreqcancel.so
+vendor/lib64/libGPreqcancel_svc.so
+vendor/lib64/libQSEEComAPI.so
+vendor/lib64/libStDrvInt.so
+vendor/lib64/libdiag.so
+vendor/lib64/libdrmfs.so
+vendor/lib64/libdrmtime.so
+vendor/lib64/libdsutils.so
+vendor/lib64/libidl.so
+vendor/lib64/libjson.so
+vendor/lib64/libmdmdetect.so
+vendor/lib64/libperipheral_client.so
+vendor/lib64/libqisl.so
+vendor/lib64/libqmi_cci.so
+vendor/lib64/libqmi_client_qmux.so
+vendor/lib64/libqmi_common_so.so
+vendor/lib64/libqmi_csi.so
+vendor/lib64/libqmi_encdec.so
+vendor/lib64/libqmiservices.so
+vendor/lib64/libqrtr.so
+vendor/lib64/libqsocket.so
+vendor/lib64/libsecureui.so
+vendor/lib64/libsecureui_svcsock.so
+vendor/lib64/libspcom.so
+vendor/lib64/libssd.so
+vendor/lib64/libssl.so
+vendor/lib64/libtime_genoff.so
+
+# Vendor supplementary libraries
+vendor/lib64/vendor.qti.hardware.tui_comm@1.0.so
+vendor/lib64/vendor.display.config@1.0.so
+vendor/lib64/libkeystore-engine-wifi-hidl.so
+vendor/lib64/libkeystore-wifi-hidl.so
+vendor/lib64/libcld80211.so
+vendor/lib64/vendor.vivo.hardware.wifi.keystore@1.0.so
+vendor/lib64/vendor.vivo.hardware.wifi.supplicant@1.0.so
+vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.0.so
+vendor/lib64/vendor.qti.hardware.wifi.supplicant@2.1.so
+
+# Vendor configuration
+vendor/etc/gpfspath_oem_config.xml
+
+# Touchscreen firmware
+vendor/firmware/TP-CONFIG-FW-PD1936-LCMID33-VER0x0028.bin
+vendor/firmware/TP-CONFIG-FW-PD1936-LCMID33-VER0x002C.bin
+vendor/firmware/TP-FW-PD1936-LCMID33-VER0x502100028.bin
+vendor/firmware/TP-FW-PD1936-LCMID33-VER0x50213002C.bin
+vendor/firmware/bdwlan.bin.4g
+vendor/firmware/touch_firmwares_recovery.bin
