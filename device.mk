@@ -44,9 +44,12 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libqcbor.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqcbor.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeymasterdeviceutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libkeymasterdeviceutils.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/libsqlite.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libsqlite.so \
-    $(LOCAL_PATH)/recovery/root/vendor/lib64/libandroidicu.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libandroidicu.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libkeymasterdeviceutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymasterdeviceutils.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/librpmb.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/librpmb.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libsqlite.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libsqlite.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libandroidicu.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libandroidicu.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeymasterutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libkeymasterutils.so \
+    $(LOCAL_PATH)/recovery/root/vendor/lib64/libion.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/lib64/libion.so \
 
 # Qualcomm vendor proprietary libraries
 PRODUCT_COPY_FILES += \
@@ -112,6 +115,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sys.usb.configfs=1 \
     persist.sys.usb.config=adb \
     ro.adb.secure=0
+
+# VINTF manifest for keymaster/gatekeeper HAL registration
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/manifest.xml:$(TARGET_COPY_OUT_RECOVERY_ROOT)/vendor/etc/vintf/manifest.xml
 
 # FBE decryption - QCOM TUI communication library (NOT built by AOSP)
 PRODUCT_COPY_FILES += \
