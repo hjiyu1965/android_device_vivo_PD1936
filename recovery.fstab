@@ -13,7 +13,7 @@
 /metadata        ext4              /dev/block/bootdevice/by-name/metadata                     flags=display=Metadata;wait;check
 
 # Data (FBE encryption, F2FS filesystem)
-# latemount is REQUIRED for FBE - TWRP mounts this after crypto services are ready
+# TWRP fstab - latemount removed for compatibility
 /data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=Data;wait;check;encryptable=/data;fileencryption=ice
 
 # Cache

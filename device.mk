@@ -43,6 +43,7 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/libwifikeystorehalext.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libwifikeystorehalext.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libqcbor.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqcbor.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libqtikeymaster4.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libqtikeymaster4.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libminuivivo.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libminuivivo.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libkeymasterdeviceutils.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libkeymasterdeviceutils.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libsqlite.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libsqlite.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libandroidicu.so:$(TARGET_COPY_OUT_RECOVERY_ROOT)/system/lib64/libandroidicu.so \
