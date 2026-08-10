@@ -124,6 +124,8 @@ jobs:
 
       - name: Build recovery
         run: |
+          # Fix: prevent TW_IS_FBE from being reset to 0 when DE init fails
+          sed -i '/SetValue(TW_IS_FBE, 0);/d' bootable/recovery/partition.cpp
           source build/envsetup.sh
           export ALLOW_MISSING_DEPENDENCIES=true
           lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
