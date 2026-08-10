@@ -1,0 +1,1 @@
+/dev/block/bootdevice/by-name/userdata /data f2fs noatime,nosuid,nodev,discard,inlinecrypt latemount,wait,check,fileencryption=ice,wrappedkey
