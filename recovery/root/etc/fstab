@@ -1,1 +1,2 @@
-/dev/block/bootdevice/by-name/userdata /data f2fs noatime,nosuid,nodev,discard,inlinecrypt latemount,wait,check,fileencryption=ice,wrappedkey
+/dev/block/bootdevice/by-name/metadata  /metadata  ext4  noatime,nosuid,nodev,discard  wait,check,formattable
+/dev/block/bootdevice/by-name/userdata  /data      f2fs  noatime,nosuid,nodev,discard,reserve_root=32768,resgid=1065,fsync_mode=nobarrier,inlinecrypt  latemount,wait,resize,check,formattable,fileencryption=ice,wrappedkey,reservedsize=128M,quota,checkpoint=fs
