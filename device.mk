@@ -11,6 +11,7 @@ LOCAL_PATH := device/vivo/PD1936
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery.fstab:$(TARGET_COPY_OUT_RECOVERY_ROOT)/etc/recovery.fstab \
     $(LOCAL_PATH)/recovery/root/etc/fstab:$(TARGET_COPY_OUT_RECOVERY_ROOT)/etc/fstab \
+    $(LOCAL_PATH)/recovery/root/etc/fstab:$(TARGET_COPY_OUT_RECOVERY_ROOT)/fstab.qcom \
     $(LOCAL_PATH)/recovery/root/init.recovery.platform.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.platform.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.qcom.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.qcom.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.svc.rc:$(TARGET_COPY_OUT_RECOVERY_ROOT)/init.recovery.svc.rc \
