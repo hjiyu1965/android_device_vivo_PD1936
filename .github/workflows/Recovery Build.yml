@@ -124,6 +124,19 @@ jobs:
 
       - name: Build recovery
         run: |
+          # Fix: prevent Decrypt_FBE_DE from resetting TW_IS_FBE when DE init fails
+          # This allows CE decryption to proceed through the FBE code path
+          python3 -c "
+with open('bootable/recovery/partition.cpp', 'r') as f:
+    content = f.read()
+old = '#endif\n\t}\n\tDataManager::SetValue(TW_IS_FBE, 0);\n\treturn false;\n}'
+new = '#endif\n\t}\n\treturn true; // Keep FBE enabled for CE decrypt\n}'
+assert old in content, 'Pattern not found in partition.cpp'
+content = content.replace(old, new, 1)
+with open('bootable/recovery/partition.cpp', 'w') as f:
+    f.write(content)
+print('partition.cpp patched successfully')
+"
           source build/envsetup.sh
           export ALLOW_MISSING_DEPENDENCIES=true
           lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
