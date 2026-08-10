@@ -128,29 +128,9 @@ jobs:
           sed -i '/SetValue(TW_IS_FBE, 0);/d' bootable/recovery/partition.cpp
 
           # Fix 2: vivo CE decrypt fallback - run vivofbe if standard methods fail
-          python3 -c "
-import shutil
-path = 'bootable/recovery/crypto/fscrypt/Decrypt.cpp'
-shutil.copy(path, path + '.bak')
-with open(path, 'r') as f:
-    content = f.read()
-old = '	if (stat(filename.c_str(), &st) != 0) {'
-new = '''	// vivo CE decrypt: run stock vivofbe as fallback
-	printf(\"Vivo FBE decrypt attempt via vivofbe...\\n\");
-	char vivocmd[256];
-	snprintf(vivocmd, sizeof(vivocmd), \"/system/bin/vivofbe %d '%s'\", user_id, Password.c_str());
-	if (system(vivocmd) == 0) {
-		printf(\"vivofbe returned success\\n\");
-		return true;
-	}
-	printf(\"vivofbe failed, trying TWRP standard method\\n\");
-''' + old
-assert old in content, 'Decrypt_User gatekeeper path not found'
-content = content.replace(old, new, 1)
-with open(path, 'w') as f:
-    f.write(content)
-print('Decrypt.cpp patched for vivo vivofbe fallback')
-"
+          cp ${{ github.event.inputs.DEVICE_PATH }}/recovery/root/patch_decrypt.py .
+          python3 patch_decrypt.py
+
           source build/envsetup.sh
           export ALLOW_MISSING_DEPENDENCIES=true
           lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
