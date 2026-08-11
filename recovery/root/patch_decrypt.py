@@ -8,15 +8,15 @@ with open(path, 'r') as f:
 
 old = '\tif (stat(filename.c_str(), &st) != 0) {'
 
-new = '''\t// vivo CE decrypt: use wrapper that swaps fstab for vivofbe
-\tprintf("Vivo FBE decrypt attempt via vivofbe_wrapper...\\n");
+new = '''\t// vivo CE decrypt: use GuardianAngle service via gadecrypt
+\tprintf("Vivo FBE decrypt attempt via gadecrypt...\\n");
 \tchar vivocmd[256];
-\tsnprintf(vivocmd, sizeof(vivocmd), "/system/bin/vivofbe_wrapper %d '%s'", user_id, Password.c_str());
+\tsnprintf(vivocmd, sizeof(vivocmd), "/system/bin/gadecrypt %d '%s'", user_id, Password.c_str());
 \tif (system(vivocmd) == 0) {
-\t\tprintf("vivofbe returned success\\n");
+\t\tprintf("gadecrypt returned success\\n");
 \t\treturn true;
 \t}
-\tprintf("vivofbe failed, trying TWRP standard method\\n");
+\tprintf("gadecrypt failed, trying TWRP standard method\\n");
 ''' + old
 
 assert old in content, 'Decrypt_User gatekeeper path not found'
