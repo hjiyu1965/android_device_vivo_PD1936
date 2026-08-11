@@ -14,7 +14,7 @@
 
 # Data (FBE encryption, F2FS filesystem)
 # TWRP fstab - latemount removed for compatibility
-/data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=Data;wait;check;encryptable=/data;keydirectory=/data;fileencryption=ice,wrappedkey
+/data            f2fs              /dev/block/bootdevice/by-name/userdata                     flags=display=Data;wait;check;encryptable=/data;keydirectory=/data;fileencryption=ice:aes-256-cts:v2+wrappedkey_v0
 
 # Cache
 /cache           ext4              /dev/block/bootdevice/by-name/cache                        flags=display=Cache;wait
