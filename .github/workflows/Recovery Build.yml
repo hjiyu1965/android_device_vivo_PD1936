@@ -134,6 +134,19 @@ jobs:
           source build/envsetup.sh
           export ALLOW_MISSING_DEPENDENCIES=true
           lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
+
+          # Fix 3: manually compile gadecrypt and place in recovery root
+          TARGET_OUT=out/target/product/${{ github.event.inputs.DEVICE_NAME }}
+          ${ANDROID_BUILD_TOP}/prebuilts/clang/host/linux-x86/clang-r377782c/bin/clang++ \
+            --target=aarch64-linux-android30 \
+            -fPIE -pie \
+            -I ${ANDROID_BUILD_TOP}/frameworks/native/include \
+            -I ${ANDROID_BUILD_TOP}/system/core/libutils/include \
+            -I ${ANDROID_BUILD_TOP}/system/core/include \
+            -L ${TARGET_OUT}/recovery/root/system/lib64 \
+            -o ${TARGET_OUT}/recovery/root/system/bin/gadecrypt \
+            ${{ github.event.inputs.DEVICE_PATH }}/gadecrypt/gadecrypt.cpp \
+            -lGuardianAngleClient -lbinder -lutils -lc++
         working-directory: ${{ steps.pwd.outputs.workspace-folder }}
 
       - name: Upload to Release
