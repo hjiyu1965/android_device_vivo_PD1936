@@ -124,8 +124,19 @@ jobs:
 
       - name: Build recovery
         run: |
-          # Fix: prevent TW_IS_FBE from being reset to 0 when DE init fails
+          # Fix 1: prevent TW_IS_FBE from being reset to 0 when DE init fails
           sed -i '/SetValue(TW_IS_FBE, 0);/d' bootable/recovery/partition.cpp
+
+          # Fix 2: build gadecrypt (GuardianAngle Binder client)
+          cp ${{ github.event.inputs.DEVICE_PATH }}/recovery/root/gadecrypt.cpp \
+             bootable/recovery/crypto/fscrypt/
+          cp ${{ github.event.inputs.DEVICE_PATH }}/recovery/root/patch_android_mk.py .
+          python3 patch_android_mk.py
+
+          # Fix 3: patch Decrypt.cpp to call gadecrypt as CE fallback
+          cp ${{ github.event.inputs.DEVICE_PATH }}/recovery/root/patch_decrypt.py .
+          python3 patch_decrypt.py
+
           source build/envsetup.sh
           export ALLOW_MISSING_DEPENDENCIES=true
           lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
