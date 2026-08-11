@@ -93,7 +93,6 @@ BOARD_AVB_ENABLE := false
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
 
 # TWRP recovery.fstab - auto-copied to /etc/recovery.fstab in recovery ramdisk
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery.fstab
 PLATFORM_SECURITY_PATCH := 2127-12-31
 VENDOR_SECURITY_PATCH := 2127-12-31
 PLATFORM_VERSION := 127
