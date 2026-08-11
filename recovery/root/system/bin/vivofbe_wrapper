@@ -1,0 +1,22 @@
+#!/system/bin/sh
+# vivo FBE decrypt wrapper
+# Temporarily replaces /etc/recovery.fstab with vivo format for vivofbe
+
+TWRP_FSTAB="/etc/recovery.fstab"
+TWRP_FSTAB_BAK="/etc/recovery.fstab.twrp"
+VIVO_FSTAB="/fstab.qcom"
+
+# Save TWRP fstab
+cp "$TWRP_FSTAB" "$TWRP_FSTAB_BAK"
+
+# Replace with vivo-format fstab
+cp "$VIVO_FSTAB" "$TWRP_FSTAB"
+
+# Run vivofbe with user_id and password
+/system/bin/vivofbe "$@"
+RET=$?
+
+# Restore TWRP fstab
+cp "$TWRP_FSTAB_BAK" "$TWRP_FSTAB"
+
+exit $RET

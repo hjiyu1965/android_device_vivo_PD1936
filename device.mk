@@ -21,10 +21,8 @@ PRODUCT_COPY_FILES += \
 # vivo proprietary binaries
 # NOTE: wait_for_keymaster is built from source by AOSP/TWRP, do NOT copy as prebuilt
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/system/bin/aria2c:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/aria2c \
-    $(LOCAL_PATH)/recovery/root/system/bin/guardianangle:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/guardianangle \
-    $(LOCAL_PATH)/recovery/root/system/bin/little_buddy:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/little_buddy \
     $(LOCAL_PATH)/recovery/root/system/bin/vivofbe:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/vivofbe \
+    $(LOCAL_PATH)/recovery/root/system/bin/vivofbe_wrapper:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/vivofbe_wrapper \
     $(LOCAL_PATH)/recovery/root/system/bin/vivotool:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/vivotool \
     $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/vts_app_recovery
 

@@ -8,10 +8,10 @@ with open(path, 'r') as f:
 
 old = '\tif (stat(filename.c_str(), &st) != 0) {'
 
-new = '''\t// vivo CE decrypt: run stock vivofbe as fallback
-\tprintf("Vivo FBE decrypt attempt via vivofbe...\\n");
+new = '''\t// vivo CE decrypt: use wrapper that swaps fstab for vivofbe
+\tprintf("Vivo FBE decrypt attempt via vivofbe_wrapper...\\n");
 \tchar vivocmd[256];
-\tsnprintf(vivocmd, sizeof(vivocmd), "/system/bin/vivofbe %d '%s'", user_id, Password.c_str());
+\tsnprintf(vivocmd, sizeof(vivocmd), "/system/bin/vivofbe_wrapper %d '%s'", user_id, Password.c_str());
 \tif (system(vivocmd) == 0) {
 \t\tprintf("vivofbe returned success\\n");
 \t\treturn true;
