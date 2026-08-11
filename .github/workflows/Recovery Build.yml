@@ -124,13 +124,6 @@ jobs:
 
       - name: Build recovery
         run: |
-          # Fix 1: prevent TW_IS_FBE from being reset to 0 when DE init fails
-          sed -i '/SetValue(TW_IS_FBE, 0);/d' bootable/recovery/partition.cpp
-
-          # Fix 2: patch Decrypt.cpp with inline GuardianAngle Binder call
-          cp ${{ github.event.inputs.DEVICE_PATH }}/recovery/root/patch_decrypt.py .
-          python3 patch_decrypt.py
-
           source build/envsetup.sh
           export ALLOW_MISSING_DEPENDENCIES=true
           lunch ${{ github.event.inputs.MAKEFILE_NAME }}-eng && make ${{ github.event.inputs.BUILD_TARGET }}image -j$(nproc --all)
