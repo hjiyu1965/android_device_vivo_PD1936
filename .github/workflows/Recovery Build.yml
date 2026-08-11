@@ -130,17 +130,8 @@ jobs:
           # Fix 2: build gadecrypt - GuardianAngle service client for CE decrypt
           cp ${{ github.event.inputs.DEVICE_PATH }}/recovery/root/gadecrypt.cpp \
              bootable/recovery/crypto/fscrypt/
-          sed -i '/^endif/i \
-include \$(CLEAR_VARS)\n\
-LOCAL_MODULE := gadecrypt\n\
-LOCAL_MODULE_TAGS := optional\n\
-LOCAL_MODULE_CLASS := RECOVERY_EXECUTABLES\n\
-LOCAL_MODULE_PATH := \$(TARGET_RECOVERY_ROOT_OUT)/system/bin\n\
-LOCAL_SRC_FILES := gadecrypt.cpp\n\
-LOCAL_SHARED_LIBRARIES := libbinder libutils libc++\n\
-LOCAL_LDFLAGS += -lGuardianAngleClient\n\
-include \$(BUILD_EXECUTABLE)\n' \
-             bootable/recovery/crypto/fscrypt/Android.mk
+          cp ${{ github.event.inputs.DEVICE_PATH }}/recovery/root/patch_android_mk.py .
+          python3 patch_android_mk.py
 
           # Fix 3: patch Decrypt.cpp to call gadecrypt as CE fallback
           cp ${{ github.event.inputs.DEVICE_PATH }}/recovery/root/patch_decrypt.py .
