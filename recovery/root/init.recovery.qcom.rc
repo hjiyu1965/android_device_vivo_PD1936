@@ -30,7 +30,14 @@ import /init.recovery.platform.rc
 import /init.recovery.svc.rc
 import /init.recovery.touch.rc
 
+# Clear stale boot-recovery command from misc to prevent bootloop
+service misc_clean /system/bin/dd if=/dev/zero of=/dev/block/bootdevice/by-name/misc bs=1 count=64
+    user root
+    oneshot
+    seclabel u:r:recovery:s0
+
 on init
+    exec_start misc_clean
     write /sys/class/backlight/panel0-backlight/brightness 200
     setprop sys.usb.configfs 1
     setprop sys.usb.controller "a600000.dwc3"
