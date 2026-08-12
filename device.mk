@@ -23,7 +23,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/bin/vivofbe:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/vivofbe \
     $(LOCAL_PATH)/recovery/root/system/bin/vivofbe_wrapper:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/vivofbe_wrapper \
     $(LOCAL_PATH)/recovery/root/system/bin/vivotool:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/vivotool \
-    $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/vts_app_recovery
+    $(LOCAL_PATH)/recovery/root/system/bin/vts_app_recovery:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/vts_app_recovery \
+    $(LOCAL_PATH)/recovery/root/system/bin/wait_for_keymaster:$(TARGET_RECOVERY_ROOT_OUT)/system/bin/wait_for_keymaster
 
 # FBE decryption chain - vendor/bin HAL services
 PRODUCT_COPY_FILES += \
@@ -47,6 +48,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/system/lib64/librpmb.so:$(TARGET_RECOVERY_ROOT_OUT)/system/lib64/librpmb.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libsqlite.so:$(TARGET_RECOVERY_ROOT_OUT)/system/lib64/libsqlite.so \
     $(LOCAL_PATH)/recovery/root/system/lib64/libandroidicu.so:$(TARGET_RECOVERY_ROOT_OUT)/system/lib64/libandroidicu.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/libhardware_legacy.so:$(TARGET_RECOVERY_ROOT_OUT)/system/lib64/libhardware_legacy.so \
+    $(LOCAL_PATH)/recovery/root/system/lib64/android.system.suspend@1.0.so:$(TARGET_RECOVERY_ROOT_OUT)/system/lib64/android.system.suspend@1.0.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libkeymasterutils.so:$(TARGET_RECOVERY_ROOT_OUT)/vendor/lib64/libkeymasterutils.so \
     $(LOCAL_PATH)/recovery/root/vendor/lib64/libion.so:$(TARGET_RECOVERY_ROOT_OUT)/vendor/lib64/libion.so \
 
