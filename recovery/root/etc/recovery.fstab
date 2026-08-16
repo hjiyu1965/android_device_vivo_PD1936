@@ -3,7 +3,6 @@
 # NON-A/B device (dedicated recovery partition)
 
 # System (system_root_image)
-/system          ext4              /dev/block/bootdevice/by-name/system                       flags=display=System;wait;backup=1
 /system_root     auto              /dev/block/bootdevice/by-name/system                       flags=display=System;wait;backup=1
 
 # Vendor
