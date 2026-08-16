@@ -40,10 +40,61 @@
 
 # Raw partitions
 /misc            emmc              /dev/block/bootdevice/by-name/misc                         flags=display=Misc;IsPresent;backup=1;flashimg
-/boot            emmc              /dev/block/bootdevice/by-name/boot                         flags=display=Boot
-/recovery        emmc              /dev/block/bootdevice/by-name/recovery                     flags=display=Recovery
-/vbmeta          emmc              /dev/block/bootdevice/by-name/vbmeta                       flags=display=Vbmeta
-/dtbo            emmc              /dev/block/bootdevice/by-name/dtbo                         flags=display=DTBO
+/boot            emmc              /dev/block/bootdevice/by-name/boot                         flags=display=Boot;backup=1;flashimg
+/recovery        emmc              /dev/block/bootdevice/by-name/recovery                     flags=display=Recovery;backup=1;flashimg
+/vbmeta          emmc              /dev/block/bootdevice/by-name/vbmeta                       flags=display=Vbmeta;backup=1;flashimg
+/dtbo            emmc              /dev/block/bootdevice/by-name/dtbo                         flags=display=DTBO;backup=1;flashimg
 
 # USB OTG
 /usbotg          vfat              /devices/platform/soc/*.ssusb/*.dwc3/xhci-hcd.*.auto*      flags=display=USB_OTG;storage;removable;fsflags=utf8
+
+# Bootloader / firmware partitions (raw images)
+/abl             emmc              /dev/block/bootdevice/by-name/abl             flags=display=ABL;backup=1;flashimg
+/aop             emmc              /dev/block/bootdevice/by-name/aop             flags=display=AOP;backup=1;flashimg
+/cmnlib          emmc              /dev/block/bootdevice/by-name/cmnlib          flags=display=CMNLIB;backup=1;flashimg
+/cmnlib64        emmc              /dev/block/bootdevice/by-name/cmnlib64        flags=display=CMNLIB64;backup=1;flashimg
+/devcfg          emmc              /dev/block/bootdevice/by-name/devcfg          flags=display=DEVCFG;backup=1;flashimg
+/hyp             emmc              /dev/block/bootdevice/by-name/hyp             flags=display=HYP;backup=1;flashimg
+/tz              emmc              /dev/block/bootdevice/by-name/tz              flags=display=TZ;backup=1;flashimg
+/xbl             emmc              /dev/block/bootdevice/by-name/xbl             flags=display=XBL;backup=1;flashimg
+/xbl_config      emmc              /dev/block/bootdevice/by-name/xbl_config      flags=display=XBL_Config;backup=1;flashimg
+/xbl_configbak   emmc              /dev/block/bootdevice/by-name/xbl_configbak   flags=display=XBL_Config_Bak;backup=1;flashimg
+/xblbak          emmc              /dev/block/bootdevice/by-name/xblbak          flags=display=XBL_Bak;backup=1;flashimg
+/keymaster       emmc              /dev/block/bootdevice/by-name/keymaster       flags=display=Keymaster;backup=1;flashimg
+/qupfw           emmc              /dev/block/bootdevice/by-name/qupfw           flags=display=QUPFW;backup=1;flashimg
+/storsec         emmc              /dev/block/bootdevice/by-name/storsec         flags=display=STOR_SEC;backup=1;flashimg
+/uefisecapp      emmc              /dev/block/bootdevice/by-name/uefisecapp      flags=display=UEFI_SecApp;backup=1;flashimg
+/uefivarstore    emmc              /dev/block/bootdevice/by-name/uefivarstore    flags=display=UEFI_VarStore;backup=1;flashimg
+/imagefv         emmc              /dev/block/bootdevice/by-name/imagefv         flags=display=ImageFV;backup=1;flashimg
+/toolsfv         emmc              /dev/block/bootdevice/by-name/toolsfv         flags=display=ToolsFV;backup=1;flashimg
+/multiimgoem     emmc              /dev/block/bootdevice/by-name/multiimgoem     flags=display=MultiImg_OEM;backup=1;flashimg
+/multiimgqti     emmc              /dev/block/bootdevice/by-name/multiimgqti     flags=display=MultiImg_QTI;backup=1;flashimg
+/apdp            emmc              /dev/block/bootdevice/by-name/apdp            flags=display=APDP;backup=1;flashimg
+/msadp           emmc              /dev/block/bootdevice/by-name/msadp           flags=display=MSADP;backup=1;flashimg
+/ddr             emmc              /dev/block/bootdevice/by-name/ddr             flags=display=DDR;backup=1;flashimg
+/cdt             emmc              /dev/block/bootdevice/by-name/cdt             flags=display=CDT;backup=1;flashimg
+/dip             emmc              /dev/block/bootdevice/by-name/dip             flags=display=DIP;backup=1;flashimg
+/devinfo         emmc              /dev/block/bootdevice/by-name/devinfo         flags=display=DevInfo;backup=1;flashimg
+/limits          emmc              /dev/block/bootdevice/by-name/limits          flags=display=Limits;backup=1;flashimg
+/logfs           emmc              /dev/block/bootdevice/by-name/logfs           flags=display=LogFS;backup=1;flashimg
+/logdump         emmc              /dev/block/bootdevice/by-name/logdump         flags=display=LogDump;backup=1;flashimg
+/modemst1        emmc              /dev/block/bootdevice/by-name/modemst1        flags=display=ModemST1;backup=1;flashimg
+/modemst2        emmc              /dev/block/bootdevice/by-name/modemst2        flags=display=ModemST2;backup=1;flashimg
+/fsc             emmc              /dev/block/bootdevice/by-name/fsc             flags=display=FSC;backup=1;flashimg
+/fsg             emmc              /dev/block/bootdevice/by-name/fsg             flags=display=FSG;backup=1;flashimg
+/secdata         emmc              /dev/block/bootdevice/by-name/secdata         flags=display=SecData;backup=1;flashimg
+/seed            emmc              /dev/block/bootdevice/by-name/seed            flags=display=Seed;backup=1;flashimg
+/splash          emmc              /dev/block/bootdevice/by-name/splash          flags=display=Splash;backup=1;flashimg
+/spunvm          emmc              /dev/block/bootdevice/by-name/spunvm          flags=display=SPUNVM;backup=1;flashimg
+/ssd             emmc              /dev/block/bootdevice/by-name/ssd             flags=display=SSD;backup=1;flashimg
+/catecontentfv   emmc              /dev/block/bootdevice/by-name/catecontentfv   flags=display=CateContentFV;backup=1;flashimg
+/catefv          emmc              /dev/block/bootdevice/by-name/catefv          flags=display=CateFV;backup=1;flashimg
+/cateloader      emmc              /dev/block/bootdevice/by-name/cateloader      flags=display=CateLoader;backup=1;flashimg
+/core_nhlos      emmc              /dev/block/bootdevice/by-name/core_nhlos      flags=display=Core_NHLOS;backup=1;flashimg
+/frp             emmc              /dev/block/bootdevice/by-name/frp             flags=display=FRP;backup=1;flashimg
+/keystore        emmc              /dev/block/bootdevice/by-name/keystore        flags=display=Keystore;backup=1;flashimg
+/rawdump         emmc              /dev/block/bootdevice/by-name/rawdump         flags=display=RawDump;backup=1;flashimg
+/apanic          emmc              /dev/block/bootdevice/by-name/apanic          flags=display=APanic;backup=1;flashimg
+/backup          emmc              /dev/block/bootdevice/by-name/backup          flags=display=BackupGPT;backup=1;flashimg
+/survival        emmc              /dev/block/bootdevice/by-name/survival        flags=display=Survival;backup=1;flashimg
+/vgc             emmc              /dev/block/bootdevice/by-name/vgc             flags=display=VGC;backup=1;flashimg
