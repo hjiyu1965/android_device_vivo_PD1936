@@ -3,11 +3,11 @@
 # NON-A/B device (dedicated recovery partition)
 
 # System (system_root_image)
-/system          ext4              /dev/block/bootdevice/by-name/system                       flags=display=System;wait
-/system_root     auto              /dev/block/bootdevice/by-name/system                       flags=display=System;wait
+/system          ext4              /dev/block/bootdevice/by-name/system                       flags=display=System;wait;backup=1
+/system_root     auto              /dev/block/bootdevice/by-name/system                       flags=display=System;wait;backup=1
 
 # Vendor
-/vendor          ext4              /dev/block/bootdevice/by-name/vendor                       flags=display=Vendor;wait
+/vendor          ext4              /dev/block/bootdevice/by-name/vendor                       flags=display=Vendor;wait;backup=1
 
 # Metadata (needed for FBE key storage - MUST mount before /data)
 /metadata        ext4              /dev/block/bootdevice/by-name/metadata                     flags=display=Metadata;wait;check
@@ -20,23 +20,23 @@
 /cache           ext4              /dev/block/bootdevice/by-name/cache                        flags=display=Cache;wait
 
 # OEM
-/oem             ext4              /dev/block/bootdevice/by-name/oem                           flags=display=OEM;wait
+/oem             ext4              /dev/block/bootdevice/by-name/oem                           flags=display=OEM;wait;backup=1
 
 # External SD card
 /external_sd     vfat              /devices/platform/soc/8804000.sdhci/mmc_host*              flags=display=External_SD;storage;removable;fsflags=utf8
 /external_sd     vfat              /devices/platform/soc/1da4000.ufshc_card/host*             flags=display=External_SD;storage;removable;fsflags=utf8
 
 # Modem firmware
-/vendor/firmware_mnt  vfat         /dev/block/bootdevice/by-name/modem                        flags=display=Firmware;wait
+/vendor/firmware_mnt  vfat         /dev/block/bootdevice/by-name/modem                        flags=display=Firmware;wait;backup=1
 
 # DSP
-/vendor/dsp      ext4              /dev/block/bootdevice/by-name/dsp                           flags=display=DSP;wait
+/vendor/dsp      ext4              /dev/block/bootdevice/by-name/dsp                           flags=display=DSP;wait;backup=1
 
 # Persist
-/persist          ext4              /dev/block/bootdevice/by-name/persist                      flags=display=Persist;wait;check
+/persist          ext4              /dev/block/bootdevice/by-name/persist                      flags=display=Persist;wait;check;backup=1
 
 # Bluetooth firmware
-/vendor/bt_firmware  vfat          /dev/block/bootdevice/by-name/bluetooth                    flags=display=BT_Firmware;wait
+/vendor/bt_firmware  vfat          /dev/block/bootdevice/by-name/bluetooth                    flags=display=BT_Firmware;wait;backup=1
 
 # Raw partitions
 /misc            emmc              /dev/block/bootdevice/by-name/misc                         flags=display=Misc;IsPresent;backup=1;flashimg
