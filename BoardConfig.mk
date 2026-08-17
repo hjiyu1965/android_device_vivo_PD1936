@@ -113,6 +113,10 @@ TW_INCLUDE_CRYPTO_FBE := true
 TW_INCLUDE_FBE_METADATA_DECRYPT := true
 # 修正：Android 11 使用 fscrypt 策略版本 2
 TW_USE_FSCRYPT_POLICY := 1
+# vivo kernel: install fscrypt keys via add_key into the session "fscrypt"
+# keyring (stock vold behavior); the FS_IOC_ADD_ENCRYPTION_KEY backport stores
+# keys where the v1 policy lookup never finds them.
+TW_FORCE_LEGACY_FSCRYPT_KEYRING := true
 BOARD_USES_QCOM_FBE_DECRYPTION := true
 # 已删除过时的 TARGET_CRYPTFS_HW_VERSION := qcom
 

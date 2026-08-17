@@ -73,3 +73,59 @@
 ## 密钥同步脚本
 - sync_fbe_keys.sh（仓库根目录）：改锁屏密码/OTA 后在已解锁的系统上执行一次。
 - 用法：手机开机进系统 → 解锁屏幕 → 电脑上运行 ./sync_fbe_keys.sh → adb reboot recovery。
+
+## Magisk 安装（vivo 块设备保护钩子的绕过）
+- 现象：TWRP 刷 Magisk 报 "Unable to unpack boot image" + openat /dev/block/by-name/boot EACCES。
+- 根因：vivo 内核拒绝【非 adbd 后代】进程打开块设备（recovery 域、su 域、路径白名单均无效，
+  与 SELinux/路径/会话无关；adb shell 发起的进程可以）。
+- 修复（bootable/recovery/orscmd/orscmd.cpp，commit 4bd2563）：
+  twrp CLI（adbd 子进程）执行 install 时：
+    1) dd boot 分区 -> /tmp/twrp_boot.img
+    2) 重定向 /dev/block/by-name/boot -> 临时文件（安装器操作普通文件）
+    3) 安装完成后恢复符号链接，若文件被修改则写回 boot 分区
+- 用法：adb shell 'twrp install /cache/Magisk-v30.7.zip'（GUI 直接点安装仍会失败，
+  必须走 twrp CLI；zip 放到 /cache 最稳，/data/media 的 FUSE 推送偶尔会损坏文件）。
+- Magisk v30.7 已验证：unpack -> patch ramdisk -> repack -> 写回 boot，系统正常启动。
+
+## 2026-08 格式化解密回归：真根因 = 密钥装入方式（keyring 路径）
+
+### 现象
+Format Data 后重新进 TWRP：显示"解密成功"但 /data/data、/data/system、/data/media/0
+全是密文文件名；顶层 /data（无策略）正常。
+
+### 根因链
+1. Format Data 抹掉 /data/unencrypted/user_keys（系统不会自动重建 savior 副本）。
+2. TWRP fscrypt_init_user0 发现 de/0 缺失 → create_and_install_user_keys 现场生成
+   一对全新随机密钥写进去 → 第一次进 TWRP 失败，第二次"成功"但钥匙全错。
+3. 更深层：即使换成真密钥，TWRP 仍乱码。对比 system 与 recovery 的 /proc/keys：
+   - 系统（正常）：keyring "fscrypt"，4 个 fscrypt-p 类型 key，描述=策略 ref 裸 hex，
+     payload 72B = struct fscrypt_key{mode=0, raw[64](wrapped), size=64}。
+   - TWRP（乱码）：keyring "fscrypt-sda19"，1 个 ._fscrypt key，描述 6db0749fb1698fca
+     （内核自算），与任何 v1 策略 ref 都不匹配。
+   即 vivo 内核的 FS_IOC_ADD_ENCRYPTION_KEY 回移实现把 key 存到 v1 查找根本不会
+   查询的位置；vold 实际走 add_key("fscrypt-p"|"logon", ...) 进会话 "fscrypt" ring。
+   已验证 TWRP 的 keyref 计算（double-SHA512(wrapped[0:32])[0:8]）与策略 ref 一致
+   （/data/unencrypted/ref = 0d14e27eef0cf3cb = fscryptpolicyget /data/adb）。
+
+### 修复（twrp11/bootable/recovery/crypto/fscrypt/KeyUtil.cpp + BoardConfig）
+- BoardConfig: TW_FORCE_LEGACY_FSCRYPT_KEYRING := true（Android.mk 转 -D）。
+- isFsKeyringSupported() 强制返回 false → installKey 走 installKeyLegacy。
+- installKeyLegacy：类型按序尝试 "fscrypt-p"、"logon"；描述加裸 hex ref
+  （vold 的 key 描述就是裸 ref）；fscryptKeyring() 不存在时创建 "fscrypt" ring。
+- payload 与 stock vold 反汇编结果一致：{mode=0, raw=wrapped 64B, size=64}（72B）。
+
+### 防止再犯（FsCrypt.cpp）
+- fscrypt_init_user0：de/0 缺失且 /data/system_de 存在（已初始化 FS）时拒绝现场造 key。
+- fscrypt_init_user0 / read_and_install_user_ce_key：安装后用 fscrypt_policy_get_struct
+  对比真实策略 ref（/data/system_de/0、/data/data），不匹配直接失败并提示跑 sync 脚本。
+
+### 无 root 也能同步密钥
+- vivo 的 adb shell 能读 root-only 目录（adbd 定制）：
+  adb pull /data/misc/vold/user_keys 即可拿到标准格式明文 key（系统解锁状态下）。
+- 再进 TWRP：rm -rf /data/unencrypted/user_keys/{ce,de} && adb push 回去。
+- sync_fbe_keys.sh 需要 su；无 su 时用 pull/push 法。
+
+### Format Data "In use by the system!"
+- make_f2fs 以 O_EXCL 打开块设备，任何残留挂载（/emmc alias 等）都会让格式化失败。
+- partition.cpp Wipe_Encryption：UnMount 后强制 detach（umount/umount2 MNT_DETACH）
+  /emmc + /data，并记录 /proc/mounts 诊断。

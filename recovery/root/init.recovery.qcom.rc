@@ -37,7 +37,6 @@ service misc_clean /system/bin/dd if=/dev/zero of=/dev/block/bootdevice/by-name/
     seclabel u:r:recovery:s0
 
 on init
-    exec_start misc_clean
     write /sys/class/backlight/panel0-backlight/brightness 200
     setprop sys.usb.configfs 1
     setprop sys.usb.controller "a600000.dwc3"
@@ -51,6 +50,7 @@ on property:ro.boot.usbcontroller=*
 on fs
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+    exec_start misc_clean
 
 on post-fs-data
     # Trigger crypto services for FBE decryption (non-blocking)

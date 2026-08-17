@@ -10,7 +10,8 @@ LOCAL_PATH := device/vivo/PD1936
 # Init scripts and configuration files
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/recovery/root/etc/fstab:$(TARGET_RECOVERY_ROOT_OUT)/etc/fstab \
-    $(LOCAL_PATH)/etc/recovery.fstab:$(TARGET_RECOVERY_ROOT_OUT)/etc/recovery.fstab \
+    $(LOCAL_PATH)/recovery/root/fstab.qcom:$(TARGET_RECOVERY_ROOT_OUT)/fstab.qcom \
+    $(LOCAL_PATH)/recovery/root/etc/recovery.fstab:$(TARGET_RECOVERY_ROOT_OUT)/etc/recovery.fstab \
     $(LOCAL_PATH)/recovery/root/init.recovery.platform.rc:$(TARGET_RECOVERY_ROOT_OUT)/init.recovery.platform.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.qcom.rc:$(TARGET_RECOVERY_ROOT_OUT)/init.recovery.qcom.rc \
     $(LOCAL_PATH)/recovery/root/init.recovery.svc.rc:$(TARGET_RECOVERY_ROOT_OUT)/init.recovery.svc.rc \
@@ -96,6 +97,7 @@ PRODUCT_COPY_FILES += \
 
 # Device properties for touchscreen firmware matching and FBE decryption
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.product.first_api_level=28 \
     ro.build.oem.projects=PD1936 PD1936B PD1936C PD1936D PD1936E PD1936G \
     ro.vivo.product.release.name=PD1936 \
     ro.product.board=msmnile \
@@ -120,7 +122,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # VINTF manifest for keymaster/gatekeeper HAL registration
 PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/manifest.xml:$(TARGET_RECOVERY_ROOT_OUT)/vendor/etc/vintf/manifest.xml
+    $(LOCAL_PATH)/recovery/root/vendor/etc/vintf/manifest.xml:$(TARGET_RECOVERY_ROOT_OUT)/vendor/etc/vintf/manifest.xml \
+    $(LOCAL_PATH)/recovery/root/system/etc/vintf/manifest.xml:$(TARGET_RECOVERY_ROOT_OUT)/system/etc/vintf/manifest.xml \
+    $(LOCAL_PATH)/recovery/root/system/manifest.xml:$(TARGET_RECOVERY_ROOT_OUT)/system/manifest.xml
 
 # FBE decryption - QCOM TUI communication library (NOT built by AOSP)
 PRODUCT_COPY_FILES += \
