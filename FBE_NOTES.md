@@ -129,3 +129,17 @@ Format Data 后重新进 TWRP：显示"解密成功"但 /data/data、/data/syste
 - make_f2fs 以 O_EXCL 打开块设备，任何残留挂载（/emmc alias 等）都会让格式化失败。
 - partition.cpp Wipe_Encryption：UnMount 后强制 detach（umount/umount2 MNT_DETACH）
   /emmc + /data，并记录 /proc/mounts 诊断。
+
+## 2026-08 后续验证
+- Format Data 修复实测通过（"In use by the system!" 不再出现）。
+- 格式化后的标准流程：
+  1) TWRP 格式化 /data
+  2) 重启进系统完成初始化（让系统生成并"fixate"密钥、完成 keymaster 升级）
+  3) 解锁屏幕后同步密钥（sync_fbe_keys.sh 需要 su；无 su 用 adb pull/push 法）
+  4) 重启进 TWRP → 解密正常
+- 注意：格式化后第一次进 TWRP 必然解密失败（无密钥副本，防护会拒绝造假密钥），
+  这是预期行为，不是 bug。
+- 若同步后仍失败：再完整进一次系统（完成 keymaster 密钥升级）后重新同步一次。
+- magisk/fbe_key_sync.sh：Magisk service.d 自动同步脚本（root 持久化后可装到
+  /data/adb/service.d/，实现开机自动同步，免手动步骤）。
+  ⚠️ 本机 vivo 系统会自愈 boot 分区，Magisk 补丁会被还原，root 不稳定。
