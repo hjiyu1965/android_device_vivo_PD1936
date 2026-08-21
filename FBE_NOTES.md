@@ -143,3 +143,34 @@ Format Data 后重新进 TWRP：显示"解密成功"但 /data/data、/data/syste
 - magisk/fbe_key_sync.sh：Magisk service.d 自动同步脚本（root 持久化后可装到
   /data/adb/service.d/，实现开机自动同步，免手动步骤）。
   ⚠️ 本机 vivo 系统会自愈 boot 分区，Magisk 补丁会被还原，root 不稳定。
+
+## 2026-08-21 最终突破：inlinecrypt 挂载参数（真正的根因）
+
+### 现象
+TWRP 显示"解密成功"、文件名正常，但**文件内容全部是密文**
+（users/0.xml、keystore .metadata、照片……读出来都是乱码）。
+
+### 根因
+- vivo /data 挂载必须带 **inlinecrypt** 挂载参数（f2fs 内联加密 = ICE 硬件）。
+  原厂 fstab.qcom：
+  /dev/block/bootdevice/by-name/userdata /data f2fs noatime,nosuid,nodev,discard,
+  reserve_root=32768,resgid=1065,fsync_mode=nobarrier,inlinecrypt
+  latemount,wait,resize,check,formattable,fileencryption=ice,wrappedkey,...
+- TWRP 挂载 /data 时没传 inlinecrypt → ICE 上下文不存在：
+  - 内容加密无法由 ICE 硬件解密 → 文件内容乱码
+  - add_key("fscrypt-p",...) 报 errno=19 ENODEV（fscrypt-p key 类型依赖 ICE 上下文）
+- 文件名解密走软件 fscrypt（logon 型 key），所以一直"看起来正常"。
+- 之前误判的"用户密钥目录自加密（savior 设计）"其实是**内容层 ICE 密文**！
+  补上 inlinecrypt 后 /data/misc/vold/user_keys/de/0/version 直接读出 "1"。
+
+### 修复
+- recovery.fstab /data 行加 fsflags=noatime,nosuid,nodev,discard,reserve_root=32768,
+  resgid=1065,fsync_mode=nobarrier,inlinecrypt。
+- FsCrypt.cpp：user_key_dir 首选 /data/misc/vold/user_keys（原厂位置，系统开机后
+  已 fixate 成标准格式），/data/unencrypted/user_keys 副本仅作回退。
+
+### 结果：TWRP 完全自动解密
+- 不需要任何同步脚本、不需要 root、不需要手工步骤。
+- 唯一前提：格式化后进过一次系统（系统创建+fixate 密钥，这是密钥存在的前提）。
+- 密钥链：systemwide key → 直接读 /data/misc/vold/user_keys/{de,ce} → 完整解密
+  （文件名 + 内容全部明文，实测 users/0.xml 读出完整 XML）。

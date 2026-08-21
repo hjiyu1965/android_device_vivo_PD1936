@@ -1,0 +1,6 @@
+id=fbe_sync
+name=FBE Key Sync for TWRP
+version=v1
+versionCode=1
+author=hjiyu
+description=Copy decrypted vivo FBE user keys to /data/unencrypted/user_keys so TWRP can decrypt /data automatically
